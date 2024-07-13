@@ -41,7 +41,7 @@ INSTALLED_APPS = [
 ]
 
 EXTERNAL_APPS = [
-    "drf_redesign",
+    # "drf_redesign",
     "api.apps.ApiConfig",
     "rest_framework",
     "rest_framework_simplejwt",
@@ -102,8 +102,8 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),  # you can change access limit
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # you can change refresh limit
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=5),  # you can change access limit
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),  # you can change refresh limit
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": False,
