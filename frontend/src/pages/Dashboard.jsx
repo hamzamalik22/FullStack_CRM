@@ -6,12 +6,14 @@ import Customers from "@/components/Customers";
 import Settings from "@/components/Settings";
 import Account from "@/components/Account";
 import Orders from "@/components/Orders";
+import Header from "@/components/Header";
 
 const Dashboard = () => {
   return (
     <div className="flex">
       <Sidebar />
       <div className="flex-grow p-4">
+        <Header />
         <Routes>
           <Route path="/" element={<Navigate to="overview" />} />
           <Route path="overview" element={<Overview />} />

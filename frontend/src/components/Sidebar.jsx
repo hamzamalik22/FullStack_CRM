@@ -1,5 +1,5 @@
 import React from "react";
-import { MonitorCog } from "lucide-react";
+import { HeartHandshake, MonitorCog } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
@@ -161,29 +161,16 @@ const Sidebar = () => {
       <hr />
 
       <div className="h-[25%]">
-        <div className="shadow-md rounded-lg p-4 h-[20%]">
+        <div className="pl-6 shadow-md rounded-lg p-4 h-[20%]">
           <h2 className="text-lg font-semibold mb-2">Contact for Help</h2>
-          <p className="text-gray-600 mb-2">
+          <p className="text-zinc-400 mb-2">
             Need assistance? Feel free to contact us for support.
           </p>
-          <div className="flex items-center">
-            <svg
-              className="w-6 h-6 text-gray-600 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              />
-            </svg>
+          <div className="flex items-center gap-2">
+            <HeartHandshake size="20px" />
             <a
               href="tel:+1234567890"
-              className="text-blue-500 hover:text-blue-600 transition duration-300"
+              className="text-blue-500 hover:text-blue-600 hover:underline transition duration-300"
             >
               +1 (234) 567-890
             </a>
