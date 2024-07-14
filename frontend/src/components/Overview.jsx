@@ -5,7 +5,7 @@ const Overview = () => {
   return (
     <>
       <div>
-        <Sidebar />
+        Overview
       </div>
     </>
   );
