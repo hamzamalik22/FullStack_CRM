@@ -1,43 +1,99 @@
-import React from "react";
-import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { House } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 
-const Login = () => {
+export function Login() {
+  const { register, handleSubmit } = useForm();
+
+  const handleForm = (data) => {
+    const { email, password } = data;
+
+    console.log(email);
+    console.log(password);
+
+    let userInfo = {
+      email,
+      password,
+    };
+
+    // try {
+    //   userLogin(userInfo);
+    // } catch (error) {
+    //   console.log("error in login page", error);
+    // }
+  };
+
   return (
     <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+      <div className="absolute top-8 left-8">
+        <Link to="/" className="cursor-pointer">
+          <House />
+        </Link>
+      </div>
+      <div className="w-full h-screen flex">
+        <div className="w-[50%] flex flex-col items-center justify-center bg-zinc-200">
+          <form onSubmit={handleSubmit(handleForm)}>
+            <Card className="w-full max-w-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl">Login</CardTitle>
+                <CardDescription>
+                  Enter your email below to login to your account.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    {...register("email")}
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    required
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    {...register("password")}
+                    id="password"
+                    type="password"
+                    required
+                  />
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full">Sign in</Button>
+              </CardFooter>
+            </Card>
+          </form>
+          <div className="flex pt-8 gap-5 items-center">
+            <p>Not a customer?</p>
+            <Link to="/register">
+              <Button>Register here</Button>
+            </Link>
+          </div>
+        </div>
+        <div className="w-[50%] ">
+          <img
+            className="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1618544976528-6fe8b8a811b1?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt=""
           />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+        </div>
+      </div>
     </>
   );
-};
+}
 
 export default Login;
