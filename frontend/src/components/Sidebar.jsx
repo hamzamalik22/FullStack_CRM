@@ -170,7 +170,7 @@ const Sidebar = () => {
             <HeartHandshake size="20px" />
             <a
               href="tel:+1234567890"
-              className="text-blue-500 hover:text-blue-600 hover:underline transition duration-300"
+              className="text-green-500 hover:text-green-600 hover:underline transition duration-300"
             >
               +1 (234) 567-890
             </a>

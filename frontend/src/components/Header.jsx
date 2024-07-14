@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { LogOut, Search, Settings, User } from "lucide-react";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
@@ -36,10 +36,22 @@ const Header = () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link to="account">Profile</Link>
+                  <div className="flex gap-1 items-center">
+                    <User size="15px" />
+                    <Link to="account">Profile</Link>
+                  </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Link to="settings">Settings</Link>
+                  <div className="flex gap-1 items-center">
+                    <Settings size="15px" />
+                    <Link to="settings">Settings</Link>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div className="flex gap-1 items-center">
+                    <LogOut color="red" size="15px" />
+                    <Link>Logout</Link>
+                  </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
