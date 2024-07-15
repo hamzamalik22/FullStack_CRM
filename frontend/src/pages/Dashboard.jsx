@@ -12,7 +12,7 @@ const Dashboard = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-grow p-4">
+      <div className="flex-grow ml-[22%]">
         <Header />
         <Routes>
           <Route path="/" element={<Navigate to="overview" />} />

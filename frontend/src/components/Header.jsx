@@ -1,5 +1,5 @@
 import { LogOut, Search, Settings, User } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 
@@ -14,15 +14,29 @@ import {
 import { Link } from "react-router-dom";
 
 const Header = () => {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
+  const handleThemeSwitch = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
   return (
     <>
-      <div className="flex justify-between items-center pb-2 px-4">
+      <div className="flex justify-between items-center pb-2 px-4 p-4">
         <div className="">
           <Search size="20px" />
         </div>
         <div className="flex items-center gap-4">
-          <div>
-            <Switch />
+          <div onClick={handleThemeSwitch}>
+            <Switch  />
           </div>
           <div>
             <DropdownMenu>

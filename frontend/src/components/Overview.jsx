@@ -3,7 +3,7 @@ import React from "react";
 const Overview = () => {
   return (
     <>
-      <div>
+      <div className="h-full bg-green-300">
         Overview
       </div>
     </>
