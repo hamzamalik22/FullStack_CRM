@@ -47,7 +47,7 @@ const Overview = () => {
   return (
     <>
       <div className="h-full p-4">
-        <div className="flex gap-5 flex-shrink-0">
+        <div className="flex gap-5 flex-shrink-0 py-3 px-2">
           {listData.map((item, index) => (
             <DashboardCard key={index} data={item} />
           ))}

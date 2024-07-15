@@ -35,9 +35,7 @@ const Header = () => {
           <Search size="20px" />
         </div>
         <div className="flex items-center gap-4">
-          <div onClick={handleThemeSwitch}>
-            <Switch  />
-          </div>
+          <Switch onClick={handleThemeSwitch} />
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger>
