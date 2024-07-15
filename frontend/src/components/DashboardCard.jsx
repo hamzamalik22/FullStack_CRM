@@ -1,7 +1,7 @@
 import {
   ChevronsUp,
   DollarSign,
-  ChevronDown,
+  ChevronsDown,
   Users,
   Logs,
   NotepadTextDashed,
@@ -13,7 +13,7 @@ const iconMapping = {
   users: Users,
   menu: Logs,
   mail: NotepadTextDashed,
-  down: ChevronDown,
+  down: ChevronsDown,
   up: ChevronsUp,
 };
 
@@ -31,6 +31,7 @@ const DashboardCard = ({ data }) => {
 
   const LargeIcon = iconMapping[large_icon];
   const SmallIcon = iconMapping[small_icon];
+  const smallIconColor = small_icon === 'down' ? 'text-red-400' : 'text-green-400';
 
   return (
     <>
@@ -50,7 +51,7 @@ const DashboardCard = ({ data }) => {
         </div>
 
         <div className="inner-bottom mt-3 px-3 py-5 gap-2 flex justify-between items-center w-full ">
-          <div className="flex items-center text-xs text-green-400">
+        <div className={`flex items-center text-xs ${smallIconColor}`}>
             <span>{SmallIcon && <SmallIcon size="18px" />}</span>
             <span>{small_amount && `${small_amount}%`}</span>
           </div>
