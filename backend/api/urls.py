@@ -19,5 +19,6 @@ urlpatterns = [
     path("customers/<int:pk>", views.CustomerDetails, name="theCustomer"),
     path("orders/", views.theOrder, name="theOrder"),
     path("orders/<int:pk>", views.OrderDetails, name="theOrder"),
+    path('agent/role/', views.get_user_role, name='get_user_role'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

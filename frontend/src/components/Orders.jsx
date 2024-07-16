@@ -1,17 +1,19 @@
 import { Plus, Search } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import OrderTable from "./OrderTable";
+import OrderCreateForm from "./OrderCreateForm";
 
 const Orders = () => {
+  const [formToggle, setFormToggle] = useState(false);
   return (
     <>
       <div className="h-full p-4 pb-0">
         <section className="pt-8 px-3">
           <div className="flex justify-between">
             <h1 className="text-3xl font-medium tracking-tight">Orders</h1>
-            <Button className="bg-purple-500">
+            <Button onClick={() => setFormToggle(!formToggle)} className="bg-purple-500">
               <span className="pr-3">
                 <Plus />
               </span>{" "}
@@ -38,6 +40,18 @@ const Orders = () => {
           </h2>
         </section>
       </div>
+
+
+      {formToggle ? (
+        <div className="absolute w-full h-screen top-0 left-0 bg-zinc-900/60 flex justify-center items-center ">
+          <OrderCreateForm
+            setFormToggle={setFormToggle}
+            formToggle={formToggle}
+          />
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };

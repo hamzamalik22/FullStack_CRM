@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -12,15 +13,18 @@ from .models import *
 @api_view(["GET"])
 def getRoutes(request, format=None):
     routes = [
-        {"POST": "/api/register"},
+        {"POST": "/api/register/"},
         {"POST": "/api/users/token/"},
         {"POST": "/api/users/token/refresh/"},
         {"POST & GET": "/api/agents"},
-        {"POST,GET,PUT & DELETE": "/api/agents/id"},
-        {"POST & GET": "/api/customers"},
-        {"POST,GET,PUT & DELETE": "/api/customers/id"},
-        {"POST & GET": "/api/orders"},
-        {"POST,GET,PUT & DELETE": "/api/orders/id"},
+        {"POST,GET,PUT & DELETE": "/api/agents/id/"},
+        {"POST & GET": "/api/customers/"},
+        {"POST,GET,PUT & DELETE": "/api/customers/id/"},
+        {"POST & GET": "/api/orders/"},
+        {"POST,GET,PUT & DELETE": "/api/orders/id/"},
+        {"GET": "/api/agent/role/"},
+        
+        
     ]
     return Response({"Routes": routes})
 
@@ -165,3 +169,13 @@ def OrderDetails(request, pk, format=None):
     elif request.method == "DELETE":  # Checking method
         Order.delete()  # Deleting the data
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_user_role(request):
+    user = request.user
+    try:
+        agent = Agent.objects.get(user=user)
+        return Response({"role": agent.role})
+    except Agent.DoesNotExist:
+        return Response({"role": "User"})

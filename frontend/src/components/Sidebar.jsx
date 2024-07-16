@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HeartHandshake, MonitorCog } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import api from "@/utils/api";
 
 const Sidebar = () => {
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await api.get("/api/agent/role/");
+        setRole(response.data.role);
+      } catch (error) {
+        console.error("Failed to fetch user role:", error);
+      }
+    };
+    fetchUserRole();
+  }, []);
+
   return (
     <div className="fixed left-0 top-0 h-full w-[22%] bg-[#121621] dark:bg-gray-900 text-white dark:text-gray-300 overflow-hidden">
       <div className="h-[27%]">
@@ -15,7 +30,7 @@ const Sidebar = () => {
         <div className="pt-5">
           <div className="h-14 w-[70%] mx-auto border-zinc-500 dark:border-zinc-700 border rounded-xl flex flex-col justify-evenly pl-3">
             <p className="text-xs text-zinc-300 dark:text-zinc-500 font-semibold">Role</p>
-            <h1 className="font-semibold">MANAGER</h1>
+            <h1 className="font-semibold">{role}</h1>
           </div>
         </div>
       </div>
