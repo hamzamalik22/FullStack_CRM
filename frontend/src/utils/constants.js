@@ -1,7 +1,8 @@
 const constants = {
   backendUrl: String(import.meta.env.VITE_BACKEND_URL),
-  ACCESS_TOKEN: "access",
-  REFRESH_TOKEN: "refresh",
 };
+
+export const ACCESS_TOKEN = "access";
+export const REFRESH_TOKEN = "refresh";
 
 export default constants;

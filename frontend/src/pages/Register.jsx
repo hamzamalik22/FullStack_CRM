@@ -9,35 +9,57 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import api from "@/utils/api";
+import { ACCESS_TOKEN } from "@/utils/constants";
+import { jwtDecode } from "jwt-decode";
 import { House } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function Register() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm();  // access react-form-hook components
+  const navigate = useNavigate();                // initialize navigate hook
+  const [Loading, setLoading] = useState(false); // useState for loading
 
-  const handleForm = (data) => {
-    const { email, password } = data;
+  useEffect(() => { // UseEffect checks that if user is logged in, then don't show register page and redirect it to dashboard
+    const token = localStorage.getItem(ACCESS_TOKEN);
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const now = Date.now() / 1000; // Convert date to seconds
+        if (decoded.exp > now) {
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.error("Invalid token", error);
+      }
+    }
+  }, [navigate]);
 
-    console.log(email);
-    console.log(password);
+  const handleForm = async (data) => {  // This function hold the register logic
+    setLoading(true);                  // set loading to true
+    const { username, email, password } = data;  // capture the data that is coming from form & destructure that
 
-    let userInfo = {
-      email,
-      password,
-    };
-
-    // try {
-    //   userLogin(userInfo);
-    // } catch (error) {
-    //   console.log("error in login page", error);
-    // }
+    try {
+      const res = await api.post("/api/register/", {  // making use of api.js and sending post request to register user api
+        username,
+        email,
+        password,
+      });
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       <div className="absolute top-8 left-8">
-        <Link to='/' className="cursor-pointer">
+        <Link to="/" className="cursor-pointer">
           <House />
         </Link>
       </div>
@@ -53,12 +75,22 @@ export function Register() {
               </CardHeader>
               <CardContent className="grid gap-4">
                 <div className="grid gap-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    {...register("username")}
+                    id="username"
+                    type="text"
+                    placeholder="e.g. johndoe"
+                    required
+                  />
+                </div>
+                <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     {...register("email")}
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    placeholder="e.g. johndoe@mail.com"
                     required
                   />
                 </div>
@@ -68,12 +100,13 @@ export function Register() {
                     {...register("password")}
                     id="password"
                     type="password"
+                    placeholder="*******"
                     required
                   />
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Sign in</Button>
+                <Button className="w-full">Sign up</Button>
               </CardFooter>
             </Card>
           </form>

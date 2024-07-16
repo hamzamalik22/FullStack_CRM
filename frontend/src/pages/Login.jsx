@@ -9,29 +9,52 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import api from "@/utils/api";
 import { House } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/utils/constants";
+import { jwtDecode } from "jwt-decode";
 
 export function Login() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm();     // access react-form-hook
+  const navigate = useNavigate();                 // initialize navigate hook
+  const [Loading, setLoading] = useState(false); // useState for loading
 
-  const handleForm = (data) => {
-    const { email, password } = data;
+  useEffect(() => { // UseEffect checks that if user is logged in, then don't show login page and redirect it to dashboard
+    const token = localStorage.getItem(ACCESS_TOKEN); 
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const now = Date.now() / 1000; // Convert date to seconds
+        if (decoded.exp > now) {
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.error("Invalid token", error);
+      }
+    }
+  }, [navigate]);
 
-    console.log(email);
-    console.log(password);
 
-    let userInfo = {
-      email,
-      password,
-    };
+  const handleForm = async (data) => { // This function hold the register logic
+    setLoading(true); // set loading to true
+    const { username, password } = data; // capture the data that is coming from the form & destructure that
+    try {
+      const res = await api.post("/api/users/token/", { // making use of api.js and sending post request to token access api
+        username,
+        password,
+      });
 
-    // try {
-    //   userLogin(userInfo);
-    // } catch (error) {
-    //   console.log("error in login page", error);
-    // }
+      localStorage.setItem(ACCESS_TOKEN, res.data.access); // store the access token to local storage
+      localStorage.setItem(REFRESH_TOKEN, res.data.refresh); // store the refresh token to local storage
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,17 +71,17 @@ export function Login() {
               <CardHeader>
                 <CardTitle className="text-2xl">Login</CardTitle>
                 <CardDescription>
-                  Enter your email below to login to your account.
+                  Enter your username below to login to your account.
                 </CardDescription>
               </CardHeader>
               <CardContent className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="username">Username</Label>
                   <Input
-                    {...register("email")}
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
+                    {...register("username")}
+                    id="username"
+                    type="text"
+                    placeholder="e.g. johndoe"
                     required
                   />
                 </div>
@@ -68,6 +91,7 @@ export function Login() {
                     {...register("password")}
                     id="password"
                     type="password"
+                    placeholder="*******"
                     required
                   />
                 </div>

@@ -11,10 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [theme, setTheme] = useState("light");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (theme === "dark") {
@@ -27,6 +28,11 @@ const Header = () => {
   const handleThemeSwitch = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+
+  function Logout() {
+    localStorage.clear();
+    navigate("/login");
+  }
 
   return (
     <>
@@ -60,9 +66,12 @@ const Header = () => {
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <div className="flex gap-1 items-center">
+                  <div
+                    onClick={() => Logout()}
+                    className="flex gap-1 items-center cursor-pointer"
+                  >
                     <LogOut color="red" size="15px" />
-                    <Link>Logout</Link>
+                    <p>Logout</p>
                   </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>

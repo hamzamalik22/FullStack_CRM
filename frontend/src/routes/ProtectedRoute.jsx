@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../utils/api";
-import constants from "../utils/constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../utils/constants";
 import { useState, useEffect } from "react";
 
 function ProtectedRoute({ children }) {
@@ -13,14 +13,14 @@ function ProtectedRoute({ children }) {
 
   // This function refreshes the token automatically when it expires
   const refreshToken = async () => {
-    const refreshToken = localStorage.getItem(constants.REFRESH_TOKEN); // get Refresh token from local stotage
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN); // get Refresh token from local stotage
     try {
       const res = await api.post("/api/token/refresh/", {
         // sending post request to backend for new ACCESS Token
         refresh: refreshToken,
       });
       if (res.status === 200) {
-        localStorage.setItem(constants.ACCESS_TOKEN, res.data.access); // store ACCESS token in local storage
+        localStorage.setItem(ACCESS_TOKEN, res.data.access); // store ACCESS token in local storage
         setIsAuthorized(true); // set isAuthorized to true as we have an access token
       } else {
         setIsAuthorized(false);

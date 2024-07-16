@@ -1,5 +1,5 @@
 import axios from "axios";
-import constants from "./constants";
+import constants, { ACCESS_TOKEN } from "./constants";
 
 const api = axios.create({
   baseURL: constants.backendUrl,
