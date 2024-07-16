@@ -1,7 +1,6 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 
 const Settings = () => {
   return (
@@ -34,7 +33,7 @@ const Settings = () => {
               </label>
               <Input type="password" placeholder="Confirm New Password" />
             </div>
-            <Button className="bg-purple-500">Update Password</Button>
+            <Button className="w-fit bg-purple-500">Update Password</Button>
           </div>
         </div>
       </section>

@@ -10,7 +10,17 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True}}
 
 
-class RecordSerializer(serializers.ModelSerializer):
+class AgentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Record
+        model = Agent
+        fields = "__all__"
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = "__all__"
+        
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
         fields = "__all__"

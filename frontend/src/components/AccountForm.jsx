@@ -43,7 +43,7 @@ const AccountForm = () => {
                   class="block uppercase tracking-wide dark:text-zinc-300 text-gray-700 text-xs font-bold mb-2"
                   for="grid-first-name"
                 >
-                  State
+                  Email
                 </label>
                 <input
                   class="appearance-none focus:border-gray-500 block w-full bg-transparent border-gray-200 text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none "

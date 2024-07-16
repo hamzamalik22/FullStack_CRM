@@ -15,7 +15,7 @@ const Overview = () => {
     },
     {
       title: "CUSTOMERS",
-      large_amount: "$1.6k",
+      large_amount: "1.6k",
       large_icon: "users",
       small_icon: "down",
       small_amount: "16",

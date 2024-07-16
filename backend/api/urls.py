@@ -13,7 +13,11 @@ urlpatterns = [
     path("users/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("", views.getRoutes, name="getRoutes"),
     path("register/", views.registerUser, name="createUser"),
-    path("records/", views.theRecord, name="theRecord"),
-    path("records/<int:pk>", views.recordDetails, name="theRecord"),
+    path("agents/", views.theAgent, name="theAgents"),
+    path("agents/<int:pk>", views.AgentDetails, name="theAgent"),
+    path("customers/", views.theCustomer, name="theCustomer"),
+    path("customers/<int:pk>", views.CustomerDetails, name="theCustomer"),
+    path("orders/", views.theOrder, name="theOrder"),
+    path("orders/<int:pk>", views.OrderDetails, name="theOrder"),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

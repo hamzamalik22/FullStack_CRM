@@ -13,7 +13,7 @@ import { House } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-export function Regsiter() {
+export function Register() {
   const { register, handleSubmit } = useForm();
 
   const handleForm = (data) => {
@@ -96,4 +96,4 @@ export function Regsiter() {
   );
 }
 
-export default Regsiter;
+export default Register;
