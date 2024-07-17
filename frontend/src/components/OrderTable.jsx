@@ -1,67 +1,59 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 
-// const orders = [
-//   {
-//     orderID: "ORD001",
-//     customerName: "John Doe",
-//     totalAmount: "$250.00",
-//     status: "Shipped",
-//     orderDate: "2023-01-15",
-//   },
-//   {
-//     orderID: "ORD002",
-//     customerName: "Jane Smith",
-//     totalAmount: "$150.00",
-//     status: "Pending",
-//     orderDate: "2023-02-20",
-//   },
-//   {
-//     orderID: "ORD003",
-//     customerName: "Emily Johnson",
-//     totalAmount: "$350.00",
-//     status: "Delivered",
-//     orderDate: "2023-03-10",
-//   },
-//   {
-//     orderID: "ORD004",
-//     customerName: "Michael Brown",
-//     totalAmount: "$450.00",
-//     status: "Cancelled",
-//     orderDate: "2023-04-05",
-//   },
-//   {
-//     orderID: "ORD005",
-//     customerName: "Jessica Davis",
-//     totalAmount: "$550.00",
-//     status: "Shipped",
-//     orderDate: "2023-05-15",
-//   },
-//   {
-//     orderID: "ORD006",
-//     customerName: "David Wilson",
-//     totalAmount: "$200.00",
-//     status: "Pending",
-//     orderDate: "2023-06-01",
-//   },
-//   {
-//     orderID: "ORD007",
-//     customerName: "Sarah Miller",
-//     totalAmount: "$300.00",
-//     status: "Delivered",
-//     orderDate: "2023-07-10",
-//   },
-// ];
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { useState, useEffect } from "react";
+import { SquarePen, Trash2 } from "lucide-react";
+import { Button } from "./ui/button";
+import api from "@/utils/api";
+import OrderEditForm from "./OrderEditForm";
 
-export function OrderTable({ orders }) {
+export function OrderTable({ orders, fetchOrders }) {
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [customers, setCustomers] = useState([]);
+
+  // Fetch customers
+  const fetchCustomers = async () => {
+    try {
+      const response = await api.get("/api/customers/");
+      setCustomers(response.data.Customers);
+    } catch (error) {
+      console.error("Failed to fetch customers:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
+  // Find customer name by ID
+  const getCustomerName = (customerId) => {
+    const customer = customers.find((c) => c.id === customerId);
+    return customer ? customer.name : "Unknown Customer";
+  };
+
+  const handleDelete = async (orderId) => {
+    try {
+      await api.delete(`/api/orders/${orderId}`);
+      fetchOrders();
+    } catch (error) {
+      console.error("Failed to delete order:", error);
+    }
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -71,19 +63,67 @@ export function OrderTable({ orders }) {
           <TableHead>Status</TableHead>
           <TableHead>Total Amount</TableHead>
           <TableHead className="text-right">Order Date</TableHead>
+          <TableHead className="text-center">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {orders.map((order) => (
           <TableRow key={order.id}>
-            <TableCell className="font-medium">{order.id}</TableCell>
-            <TableCell>{order.customer.name}</TableCell>
+            <TableCell className="font-medium">ORD-{order.id}</TableCell>
+            <TableCell>{getCustomerName(order.customer)}</TableCell>
             <TableCell>{order.status}</TableCell>
             <TableCell>${order.total_Amount}</TableCell>
-            <TableCell className="text-right">{order.date_created.slice(0,10)}</TableCell>
+            <TableCell className="text-right">
+              {order.date_created.slice(0, 10)}
+            </TableCell>
+            <TableCell className="flex items-start justify-evenly">
+              <span
+                className="cursor-pointer text-blue-400"
+                onClick={() => setSelectedOrder(order)}
+              >
+                <SquarePen size="20px" />
+              </span>
+              <span className="cursor-pointer text-red-600">
+                <Dialog>
+                  <DialogTrigger>
+                    <Trash2 size="20px" />
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this order and remove the data from our servers.
+                    </DialogDescription>
+                    <Button onClick={() => handleDelete(order.id)}>
+                      Delete
+                    </Button>
+                  </DialogContent>
+                </Dialog>
+              </span>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
+      {selectedOrder && (
+        <Dialog
+          open={selectedOrder !== null}
+          onOpenChange={() => setSelectedOrder(null)}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Order</DialogTitle>
+            </DialogHeader>
+            <DialogDescription></DialogDescription>
+            <OrderEditForm
+              order={selectedOrder}
+              onClose={() => setSelectedOrder(null)}
+              fetchOrders={fetchOrders}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </Table>
   );
 }

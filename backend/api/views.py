@@ -134,8 +134,8 @@ def CustomerDetails(request, pk, format=None):
 @permission_classes([IsAuthenticated])  # make the api protected
 def theOrder(request, format=None):
     if request.method == "GET":  # Checking method
-        Orders = Order.objects.all()  # Getting all the data in variable
-        serializer = OrderSerializer(Orders, many=True)  # serializing the data
+        orders = Order.objects.all()  # Getting all the data in variable
+        serializer = OrderSerializer(orders, many=True)  # serializing the data
         return Response({"Orders": serializer.data})
     elif request.method == "POST":  # Checking method
         serializer = OrderSerializer(data=request.data)  # Serialize the input data
@@ -150,25 +150,25 @@ def theOrder(request, format=None):
 @permission_classes([IsAuthenticated])  # make the api protected
 def OrderDetails(request, pk, format=None):
     try:
-        Order = Order.objects.get(
+        order = Order.objects.get(
             id=pk
         )  # Getting the single object to update or delete
     except Order.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":  # Checking method
-        serializer = OrderSerializer(Order, many=False)  # Serializing the data
+        serializer = OrderSerializer(order, many=False)  # Serializing the data
         return Response({"Order": serializer.data})
     elif request.method == "PUT":  # Checking method
         serializer = OrderSerializer(
-            Order, data=request.data
+            order, data=request.data
         )  # get the old data, updating with new one
         if serializer.is_valid():  # Checking if data input by user is valid
             serializer.save()  # save that user response to database.
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == "DELETE":  # Checking method
-        Order.delete()  # Deleting the data
+        order.delete()  # Deleting the data
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 @api_view(["GET"])

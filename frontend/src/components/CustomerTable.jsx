@@ -12,13 +12,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription 
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { SquarePen, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import CustomerEditForm from "./CustomerEditForm";
 import api from "@/utils/api";
-import { DialogDescription } from "@radix-ui/react-dialog";
 
 export function CustomerTable({ customers, fetchCustomers }) {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
