@@ -23,6 +23,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    customer = CustomerSerializer(many=False) 
     class Meta:
         model = Order
         fields = "__all__"
