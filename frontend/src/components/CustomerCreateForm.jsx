@@ -19,7 +19,6 @@ const CustomerCreateForm = ({ setFormToggle, formToggle, fetchCustomers }) => {
   const handleForm = async (data) => {
     setLoading(true);
     const { name, email, city, country, phone } = data;
-    // console.log(data);
     try {
       const res = await api.post("/api/customers/", {
         name,

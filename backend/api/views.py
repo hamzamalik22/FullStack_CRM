@@ -46,8 +46,8 @@ def registerUser(request):
 @permission_classes([IsAuthenticated])  # make the api protected
 def theAgent(request, format=None):
     if request.method == "GET":  # Checking method
-        Agents = Agent.objects.all()  # Getting all the data in variable
-        serializer = AgentSerializer(Agents, many=True)  # serializing the data
+        agents = Agent.objects.all()  # Getting all the data in variable
+        serializer = AgentSerializer(agents, many=True)  # serializing the data
         return Response({"Agents": serializer.data})
     elif request.method == "POST":  # Checking method
         serializer = AgentSerializer(data=request.data)  # Serialize the input data
@@ -62,25 +62,25 @@ def theAgent(request, format=None):
 @permission_classes([IsAuthenticated])  # make the api protected
 def AgentDetails(request, pk, format=None):
     try:
-        Agent = Agent.objects.get(
+        agent = Agent.objects.get(
             id=pk
         )  # Getting the single object to update or delete
     except Agent.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":  # Checking method
-        serializer = AgentSerializer(Agent, many=False)  # Serializing the data
+        serializer = AgentSerializer(agent, many=False)  # Serializing the data
         return Response({"Agent": serializer.data})
     elif request.method == "PUT":  # Checking method
         serializer = AgentSerializer(
-            Agent, data=request.data
+            agent, data=request.data
         )  # get the old data, updating with new one
         if serializer.is_valid():  # Checking if data input by user is valid
             serializer.save()  # save that user response to database.
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == "DELETE":  # Checking method
-        Agent.delete()  # Deleting the data
+        agent.delete()  # Deleting the data
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -89,8 +89,8 @@ def AgentDetails(request, pk, format=None):
 @permission_classes([IsAuthenticated])  # make the api protected
 def theCustomer(request, format=None):
     if request.method == "GET":  # Checking method
-        Customers = Customer.objects.all()  # Getting all the data in variable
-        serializer = CustomerSerializer(Customers, many=True)  # serializing the data
+        customers = Customer.objects.all()  # Getting all the data in variable
+        serializer = CustomerSerializer(customers, many=True)  # serializing the data
         return Response({"Customers": serializer.data})
     elif request.method == "POST":  # Checking method
         serializer = CustomerSerializer(data=request.data)  # Serialize the input data
@@ -104,26 +104,27 @@ def theCustomer(request, format=None):
 @api_view(["GET", "PUT", "POST", "DELETE"])  # HTTP methods
 @permission_classes([IsAuthenticated])  # make the api protected
 def CustomerDetails(request, pk, format=None):
+    print(f"Received {request.method} request for customer with ID: {pk}")
     try:
-        Customer = Customer.objects.get(
+        customer = Customer.objects.get(
             id=pk
         )  # Getting the single object to update or delete
     except Customer.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":  # Checking method
-        serializer = CustomerSerializer(Customer, many=False)  # Serializing the data
+        serializer = CustomerSerializer(customer, many=False)  # Serializing the data
         return Response({"Customer": serializer.data})
     elif request.method == "PUT":  # Checking method
         serializer = CustomerSerializer(
-            Customer, data=request.data
+            customer, data=request.data
         )  # get the old data, updating with new one
         if serializer.is_valid():  # Checking if data input by user is valid
             serializer.save()  # save that user response to database.
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == "DELETE":  # Checking method
-        Customer.delete()  # Deleting the data
+        customer.delete()  # Deleting the data
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

@@ -53,7 +53,7 @@ const Customers = () => {
         </section>
         <section className="mt-6 px-3">
           <div className="border rounded-3xl shadow p-3">
-            <CustomerTable customers={customers}  />
+            <CustomerTable customers={customers} fetchCustomers={fetchCustomers}  />
           </div>
           <h2 className="text-zinc-600 text-sm flex justify-center relative top-8">
             A list of your recent customers.
