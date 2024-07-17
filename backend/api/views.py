@@ -177,6 +177,8 @@ def get_user_role(request):
     user = request.user
     try:
         agent = Agent.objects.get(user=user)
-        return Response({"role": agent.role})
+        serializer = AgentSerializer(agent, many=False)
+        
+        return Response({"role": serializer.data})
     except Agent.DoesNotExist:
         return Response({"role": "User"})

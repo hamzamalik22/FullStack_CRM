@@ -1,5 +1,7 @@
 import React from "react";
 import DashboardCard from "./DashboardCard";
+import CustomerChart from "./CustomerChart";
+import OrdersChart from "./OrdersChart";
 
 const Overview = () => {
   let listData = [
@@ -51,6 +53,14 @@ const Overview = () => {
           {listData.map((item, index) => (
             <DashboardCard key={index} data={item} />
           ))}
+        </div>
+        <div className="flex items-center justify-around">
+          <div className="w-[50%]">
+            <CustomerChart />
+          </div>
+          <div>
+            <OrdersChart />
+          </div>
         </div>
       </div>
     </>

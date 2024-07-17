@@ -10,7 +10,8 @@ const Sidebar = () => {
     const fetchUserRole = async () => {
       try {
         const response = await api.get("/api/agent/role/");
-        setRole(response.data.role);
+        console.log(response);
+        setRole(response.data.role.role);
       } catch (error) {
         console.error("Failed to fetch user role:", error);
       }

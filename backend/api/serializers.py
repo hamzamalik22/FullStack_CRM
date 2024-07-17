@@ -23,7 +23,6 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    # customer = CustomerSerializer(many=False) 
     customer = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all()) 
     class Meta:
         model = Order
