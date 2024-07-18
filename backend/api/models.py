@@ -8,6 +8,7 @@ class Agent(models.Model):
         ("Manager", "Manager"),
         ("Assistant Manager", "Assistant Manager"),
         ("Staff Member", "Staff Member"),
+        ("Tester", "Tester"),
     )
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     role = models.CharField(max_length=200, null=True, choices=ROLE)

@@ -96,7 +96,7 @@ const OrderPieChart = () => {
                 label
               >
                 {chartData.map((entry, index) => (
-                  <Pie
+                  <Pie className="text-red-500"
                     key={`slice-${index}`}
                     dataKey="count"
                     nameKey="status"

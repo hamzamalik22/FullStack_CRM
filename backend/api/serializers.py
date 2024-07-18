@@ -23,7 +23,14 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    customer = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all()) 
+    customer = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all())
+
     class Meta:
         model = Order
         fields = "__all__"
+
+
+class PasswordUpdateSerializer(serializers.Serializer):
+    current_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_new_password = serializers.CharField(required=True)

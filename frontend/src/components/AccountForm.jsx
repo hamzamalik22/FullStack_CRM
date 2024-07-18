@@ -42,7 +42,7 @@ const AccountForm = ({ data }) => {
                 className="appearance-none focus:border-gray-500 block w-full bg-transparent border-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
                 id="grid-first-name"
                 type="text"
-                placeholder="Jane"
+                placeholder="-----"
               />
             </div>
             <div className="w-full md:w-1/2 px-3">
@@ -57,7 +57,7 @@ const AccountForm = ({ data }) => {
                 className="appearance-none block w-full bg-transparent text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"
                 id="grid-last-name"
                 type="text"
-                placeholder="Doe"
+                placeholder="-----"
               />
             </div>
           </div>
@@ -75,7 +75,7 @@ const AccountForm = ({ data }) => {
                 className="appearance-none focus:border-gray-500 block w-full bg-transparent border-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
                 id="grid-email"
                 type="email"
-                placeholder="example@mail.com"
+                placeholder="-----"
               />
             </div>
             <div className="w-full md:w-1/2 px-3">
@@ -90,7 +90,7 @@ const AccountForm = ({ data }) => {
                 className="appearance-none block w-full bg-transparent text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"
                 id="grid-phone"
                 type="text"
-                placeholder="(000) 123456"
+                placeholder="-----"
               />
             </div>
           </div>
@@ -108,7 +108,7 @@ const AccountForm = ({ data }) => {
                 className="appearance-none focus:border-gray-500 block w-full bg-transparent border-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
                 id="grid-country"
                 type="text"
-                placeholder="Pakistan"
+                placeholder="-----"
               />
             </div>
             <div className="w-full md:w-1/2 px-3">
@@ -123,14 +123,14 @@ const AccountForm = ({ data }) => {
                 className="appearance-none block w-full bg-transparent text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"
                 id="grid-city"
                 type="text"
-                placeholder="Jhelum"
+                placeholder="-----"
               />
             </div>
           </div>
           <div className="flex justify-end">
             <button
               type="submit"
-              className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-purple-500 hover:bg-purple-700 font-medium py-2 px-4 rounded"
             >
               Update
             </button>

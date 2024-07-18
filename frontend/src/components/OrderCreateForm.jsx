@@ -114,7 +114,7 @@ const OrderCreateForm = ({ setFormToggle, formToggle, fetchOrders }) => {
                 />
               </div>
             </div>
-            <CardFooter className="flex justify-between">
+            <CardFooter className="flex justify-between mt-6">
               <Button
                 onClick={() => setFormToggle(!formToggle)}
                 variant="outline"

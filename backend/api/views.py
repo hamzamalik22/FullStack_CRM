@@ -8,6 +8,9 @@ from rest_framework import status
 from .serializers import *
 from .models import *
 
+from django.contrib.auth import update_session_auth_hash
+from .serializers import PasswordUpdateSerializer
+
 
 # Routes View
 @api_view(["GET"])
@@ -23,8 +26,7 @@ def getRoutes(request, format=None):
         {"POST & GET": "/api/orders/"},
         {"POST,GET,PUT & DELETE": "/api/orders/id/"},
         {"GET": "/api/agent/role/"},
-        
-        
+        {"POST": "/api/update-password/"},
     ]
     return Response({"Routes": routes})
 
@@ -128,7 +130,6 @@ def CustomerDetails(request, pk, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 # Orders View
 @api_view(["GET", "POST"])  # HTTP methods
 @permission_classes([IsAuthenticated])  # make the api protected
@@ -170,7 +171,8 @@ def OrderDetails(request, pk, format=None):
     elif request.method == "DELETE":  # Checking method
         order.delete()  # Deleting the data
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_user_role(request):
@@ -178,7 +180,39 @@ def get_user_role(request):
     try:
         agent = Agent.objects.get(user=user)
         serializer = AgentSerializer(agent, many=False)
-        
+
         return Response({"role": serializer.data})
     except Agent.DoesNotExist:
         return Response({"role": "User"})
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def update_password(request):
+    serializer = PasswordUpdateSerializer(data=request.data)
+    if serializer.is_valid():
+        user = request.user
+        current_password = serializer.validated_data["current_password"]
+        new_password = serializer.validated_data["new_password"]
+        confirm_new_password = serializer.validated_data["confirm_new_password"]
+
+        if not user.check_password(current_password):
+            return Response(
+                {"error": "Current password is incorrect"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if new_password != confirm_new_password:
+            return Response(
+                {"error": "New passwords do not match"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        user.set_password(new_password)
+        user.save()
+        update_session_auth_hash(
+            request, user
+        )  # Keep the user logged in after password change
+        return Response({"success": "Password updated successfully"})
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

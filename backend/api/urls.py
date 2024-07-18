@@ -20,5 +20,6 @@ urlpatterns = [
     path("orders/", views.theOrder, name="theOrder"),
     path("orders/<int:pk>", views.OrderDetails, name="theOrder"),
     path('agent/role/', views.get_user_role, name='get_user_role'),
+    path('update-password/', views.update_password, name='update_password'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
