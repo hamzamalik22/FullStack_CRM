@@ -10,10 +10,10 @@ const AccountCard = ({ data }) => {
           alt=""
         />
         <h1 className="text-2xl font-medium pt-2 pb-1">
-          {data.first_name || "Sofia Rivers"} {data.last_name || "Sofia Rivers"}
+          {data.first_name || "unknown"} {data.last_name || ""}
         </h1>
         <p className="text-md tracking-tight text-zinc-500">
-          {data.city || "Los Angeles "}, {data.country || "Los Angeles "}
+          {data.city || "city "}, {data.country || "country"}
         </p>
         <p className="pt-2 pb-1 text-sm tracking-tight text-zinc-500">
           {data.timezone || "UTC-5"}

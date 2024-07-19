@@ -41,11 +41,14 @@ export function Login() {
   const handleForm = async (data) => { // This function hold the register logic
     setLoading(true); // set loading to true
     const { username, password } = data; // capture the data that is coming from the form & destructure that
+    console.log(data);
     try {
       const res = await api.post("/api/users/token/", { // making use of api.js and sending post request to token access api
         username,
         password,
       });
+      
+      console.log(res);
 
       localStorage.setItem(ACCESS_TOKEN, res.data.access); // store the access token to local storage
       localStorage.setItem(REFRESH_TOKEN, res.data.refresh); // store the refresh token to local storage
@@ -65,7 +68,7 @@ export function Login() {
         </Link>
       </div>
       <div className="w-full h-screen flex">
-        <div className="w-[50%] flex flex-col items-center justify-center bg-zinc-200">
+        <div className="w-[50%] flex flex-col items-center justify-center dark:bg-zinc-900 bg-zinc-200">
           <form onSubmit={handleSubmit(handleForm)}>
             <Card className="w-full max-w-sm">
               <CardHeader>

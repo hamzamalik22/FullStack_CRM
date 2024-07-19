@@ -24,6 +24,7 @@ import OrderEditForm from "./OrderEditForm";
 export function OrderTable({ orders, fetchOrders }) {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [customers, setCustomers] = useState([]);
+  const [role, setRole] = useState("");
 
   // Fetch customers
   const fetchCustomers = async () => {
@@ -36,8 +37,25 @@ export function OrderTable({ orders, fetchOrders }) {
   };
 
   useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await api.get("/api/agent/role/");
+        setRole(response.data.role.role);
+      } catch (error) {
+        console.error("Failed to fetch user role:", error);
+      }
+    };
+    fetchUserRole();
+  }, []);
+
+  useEffect(() => {
     fetchCustomers();
   }, []);
+
+  if (role === "") {
+    // Display loading message while role is being fetched
+    return <p>Loading...</p>;
+  }
 
   // Find customer name by ID
   const getCustomerName = (customerId) => {
@@ -88,18 +106,34 @@ export function OrderTable({ orders, fetchOrders }) {
                   <DialogTrigger>
                     <Trash2 size="20px" />
                   </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you absolutely sure?</DialogTitle>
-                    </DialogHeader>
-                    <DialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      this order and remove the data from our servers.
-                    </DialogDescription>
-                    <Button onClick={() => handleDelete(order.id)}>
-                      Delete
-                    </Button>
-                  </DialogContent>
+                  {role === "Tester" ? (
+                    <>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Warning!</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                          You do not have permission to delete an order.
+                        </DialogDescription>
+                      </DialogContent>
+                    </>
+                  ) : (
+                    <>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete this Order and remove the data from our
+                          servers.
+                        </DialogDescription>
+                        <Button onClick={() => handleDelete(order.id)}>
+                          Delete
+                        </Button>
+                      </DialogContent>
+                    </>
+                  )}
                 </Dialog>
               </span>
             </TableCell>

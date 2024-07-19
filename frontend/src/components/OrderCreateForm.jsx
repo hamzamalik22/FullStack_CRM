@@ -19,23 +19,35 @@ import {
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "@/utils/api";
+import { X } from "lucide-react";
 
 const OrderCreateForm = ({ setFormToggle, formToggle, fetchOrders }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [customers, setCustomers] = useState([]);
+  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const fetchCustomers = async () => {
-    try {
-      const response = await api.get("/api/customers/");
-      setCustomers(response.data.Customers);
-    } catch (error) {
-      console.error("Failed to fetch customers:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const response = await api.get("/api/customers/");
+        setCustomers(response.data.Customers);
+      } catch (error) {
+        console.error("Failed to fetch customers:", error);
+      }
+    };
+
+    const fetchUserRole = async () => {
+      try {
+        const response = await api.get("/api/agent/role/");
+        setRole(response.data.role.role);
+      } catch (error) {
+        console.error("Failed to fetch user role:", error);
+      }
+    };
+
     fetchCustomers();
+    fetchUserRole();
   }, []);
 
   const handleFormSubmit = async (data) => {
@@ -58,74 +70,94 @@ const OrderCreateForm = ({ setFormToggle, formToggle, fetchOrders }) => {
     }
   };
 
+  if (role === "") {
+    // Display loading message while role is being fetched
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <Card className="w-[450px]">
         <CardHeader>
-          <CardTitle>Create order</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(handleFormSubmit)}>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="customer">Customer</Label>
-                <Select
-                  {...register("customer_id", { required: true })}
-                  onValueChange={(value) => setValue("customer_id", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Customer" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {customers.map((cust) => (
-                      <SelectItem key={cust.id} value={cust.id}>
-                        {cust.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="status">Status</Label>
-                <Select
-                  {...register("status", { required: true })}
-                  onValueChange={(value) => setValue("status", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Pending">Pending</SelectItem>
-                    <SelectItem value="Out for delivery">
-                      Out for delivery
-                    </SelectItem>
-                    <SelectItem value="Delivered">Delivered</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="amount">Total Amount</Label>
-                <Input
-                  {...register("total_amount", { required: true })}
-                  type="number"
-                  id="amount"
-                  placeholder="e.g. $279"
-                  onChange={(e) => setValue("total_amount", e.target.value)}
+          <CardTitle>
+            <div className="flex justify-between items-center">
+              <div>Create order</div>
+              <div>
+                <X
+                  className="cursor-pointer"
+                  onClick={() => setFormToggle(!formToggle)}
+                  size="20px"
                 />
               </div>
             </div>
-            <CardFooter className="flex justify-between mt-6">
-              <Button
-                onClick={() => setFormToggle(!formToggle)}
-                variant="outline"
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? "Creating..." : "Create"}
-              </Button>
-            </CardFooter>
-          </form>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {role === "Tester" ? (
+            <p>You do not have permission to create an order.</p>
+          ) : (
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
+              <div className="grid w-full items-center gap-4">
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="customer">Customer</Label>
+                  <Select
+                    {...register("customer_id", { required: true })}
+                    onValueChange={(value) => setValue("customer_id", value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Customer" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {customers.map((cust) => (
+                        <SelectItem key={cust.id} value={cust.id}>
+                          {cust.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="status">Status</Label>
+                  <Select
+                    {...register("status", { required: true })}
+                    onValueChange={(value) => setValue("status", value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Pending">Pending</SelectItem>
+                      <SelectItem value="Out for delivery">
+                        Out for delivery
+                      </SelectItem>
+                      <SelectItem value="Delivered">Delivered</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="amount">Total Amount</Label>
+                  <Input
+                    {...register("total_amount", { required: true })}
+                    type="number"
+                    id="amount"
+                    placeholder="e.g. $279"
+                    onChange={(e) => setValue("total_amount", e.target.value)}
+                  />
+                </div>
+              </div>
+              <CardFooter className="flex justify-between mt-6">
+                <Button
+                  onClick={() => setFormToggle(!formToggle)}
+                  variant="outline"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Creating..." : "Create"}
+                </Button>
+              </CardFooter>
+            </form>
+          )}
         </CardContent>
       </Card>
     </div>

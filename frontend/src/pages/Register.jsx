@@ -41,13 +41,14 @@ export function Register() {
   const handleForm = async (data) => {  // This function hold the register logic
     setLoading(true);                  // set loading to true
     const { username, email, password } = data;  // capture the data that is coming from form & destructure that
-
+    console.log(data);
     try {
       const res = await api.post("/api/register/", {  // making use of api.js and sending post request to register user api
         username,
         email,
         password,
       });
+      console.log(res);
       navigate("/login");
     } catch (error) {
       console.log(error);
@@ -64,7 +65,7 @@ export function Register() {
         </Link>
       </div>
       <div className="w-full h-screen flex">
-        <div className="w-[50%] flex flex-col items-center justify-center bg-zinc-200">
+        <div className="w-[50%] flex flex-col items-center justify-center dark:bg-zinc-900 bg-zinc-200">
           <form onSubmit={handleSubmit(handleForm)}>
             <Card className="w-full max-w-sm">
               <CardHeader>

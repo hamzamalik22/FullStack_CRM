@@ -1,37 +1,37 @@
 import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card";
-  import { Input } from "@/components/ui/input";
-  import { Label } from "@/components/ui/label";
-  import { Button } from "@/components/ui/button";
-  
-  import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select";
-  import { useEffect, useState } from "react";
-  import api from "@/utils/api";
-  import { useForm } from "react-hook-form";
-  
-  const OrderEditForm = ({ order, onClose, fetchOrders }) => {
-    const { register, handleSubmit, reset, setValue } = useForm({
-      defaultValues: order,
-    });
-    const [loading, setLoading] = useState(false);
-    const [customers, setCustomers] = useState([]);
-    const [formToggle, setFormToggle] = useState(false);
-  
-    useEffect(() => {
-      reset(order);
-    }, [order, reset]);
-  
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useEffect, useState } from "react";
+import api from "@/utils/api";
+import { useForm } from "react-hook-form";
+
+const OrderEditForm = ({ order, onClose, fetchOrders }) => {
+  const { register, handleSubmit, reset, setValue } = useForm({
+    defaultValues: order,
+  });
+  const [loading, setLoading] = useState(false);
+  const [customers, setCustomers] = useState([]);
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    reset(order);
+  }, [order, reset]);
+
+  useEffect(() => {
     const fetchCustomers = async () => {
       try {
         const response = await api.get("/api/customers/");
@@ -40,29 +40,47 @@ import {
         console.error("Failed to fetch customers:", error);
       }
     };
-  
-    useEffect(() => {
-      fetchCustomers();
-    }, []);
-  
-    const handleForm = async (data) => {
-      setLoading(true);
+    fetchCustomers();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
       try {
-        const url = `/api/orders/${order.id}`;
-        console.log("PUT request URL:", url);
-        console.log("PUT request data:", data);
-        await api.put(url, data);
-        fetchOrders(); // Refresh the order list
-        onClose();
+        const response = await api.get("/api/agent/role/");
+        setRole(response.data.role.role);
       } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
+        console.error("Failed to fetch user role:", error);
       }
     };
-  
-    return (
-      <div>
+    fetchUserRole();
+  }, []);
+
+  const handleForm = async (data) => {
+    setLoading(true);
+    try {
+      const url = `/api/orders/${order.id}`;
+      console.log("PUT request URL:", url);
+      console.log("PUT request data:", data);
+      await api.put(url, data);
+      fetchOrders(); // Refresh the order list
+      onClose();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (role === "") {
+    // Display loading message while role is being fetched
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <>
+      {role === "Tester" ? (
+        <p>You do not have permission to edit an order.</p>
+      ) : (
         <form onSubmit={handleSubmit(handleForm)}>
           <Card className="w-[450px]">
             <CardHeader>
@@ -127,9 +145,9 @@ import {
             </CardFooter>
           </Card>
         </form>
-      </div>
-    );
-  };
-  
-  export default OrderEditForm;
-  
+      )}
+    </>
+  );
+};
+
+export default OrderEditForm;

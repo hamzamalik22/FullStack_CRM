@@ -12,9 +12,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogDescription 
+  DialogDescription,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SquarePen, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import CustomerEditForm from "./CustomerEditForm";
@@ -22,6 +22,7 @@ import api from "@/utils/api";
 
 export function CustomerTable({ customers, fetchCustomers }) {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [role, setRole] = useState("");
 
   const handleDelete = async (customerId) => {
     try {
@@ -31,6 +32,23 @@ export function CustomerTable({ customers, fetchCustomers }) {
       console.error("Failed to delete customer:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await api.get("/api/agent/role/");
+        setRole(response.data.role.role);
+      } catch (error) {
+        console.error("Failed to fetch user role:", error);
+      }
+    };
+    fetchUserRole();
+  }, []);
+
+  if (role === "") {
+    // Display loading message while role is being fetched
+    return <p>Loading...</p>;
+  }
 
   return (
     <Table>
@@ -66,18 +84,35 @@ export function CustomerTable({ customers, fetchCustomers }) {
                   <DialogTrigger>
                     <Trash2 size="20px" />
                   </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you absolutely sure?</DialogTitle>
-                    </DialogHeader>
-                    <DialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      this Customer and remove the data from our servers.
-                    </DialogDescription>
-                    <Button onClick={() => handleDelete(customer.id)}>
-                      Delete
-                    </Button>
-                  </DialogContent>
+
+                  {role === "Tester" ? (
+                    <>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Warning!</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                          You do not have permission to delete the customer.
+                        </DialogDescription>
+                      </DialogContent>
+                    </>
+                  ) : (
+                    <>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete this Customer and remove the data from our
+                          servers.
+                        </DialogDescription>
+                        <Button onClick={() => handleDelete(customer.id)}>
+                          Delete
+                        </Button>
+                      </DialogContent>
+                    </>
+                  )}
                 </Dialog>
               </span>
             </TableCell>
