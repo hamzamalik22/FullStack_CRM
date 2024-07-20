@@ -1,6 +1,9 @@
 import React from "react";
 
 const AccountCard = ({ data }) => {
+  if (!data) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="outer relative w-[296px] h-[249px] rounded-[20px] bg-transparent border border-gray dark:border-zinc-400 text-zinc-900 dark:text-zinc-300 py-5 px-6 overflow-hidden">
       <div className="flex flex-col justify-center items-center">

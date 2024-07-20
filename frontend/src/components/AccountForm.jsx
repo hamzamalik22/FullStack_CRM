@@ -5,6 +5,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AccountForm = ({ data }) => {
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
       first_name: data.first_name,
