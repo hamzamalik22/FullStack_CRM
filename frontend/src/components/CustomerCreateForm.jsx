@@ -14,11 +14,14 @@ import api from "@/utils/api";
 import { X } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { fetchCustomers } from "@/store/actions/CustomerActions";
 
-const CustomerCreateForm = ({ setFormToggle, formToggle, fetchCustomers }) => {
+const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
   const { register, handleSubmit } = useForm();
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -47,7 +50,7 @@ const CustomerCreateForm = ({ setFormToggle, formToggle, fetchCustomers }) => {
 
       toast.success("Customer Created");
       setFormToggle(false);
-      fetchCustomers();
+      dispatch(fetchCustomers());
       console.log(res);
     } catch (error) {
       console.log(error);

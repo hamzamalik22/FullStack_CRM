@@ -19,19 +19,21 @@ import { SquarePen, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import CustomerEditForm from "./CustomerEditForm";
 import api from "@/utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCustomers,
+  deleteCustomer,
+} from "@/store/actions/CustomerActions";
 
-export function CustomerTable({ customers, fetchCustomers }) {
+export function CustomerTable() {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [role, setRole] = useState("");
+  const dispatch = useDispatch();
+  const { list, loading, error } = useSelector((state) => state.customers);
 
-  const handleDelete = async (customerId) => {
-    try {
-      await api.delete(`/api/customers/${customerId}`);
-      fetchCustomers();
-    } catch (error) {
-      console.error("Failed to delete customer:", error);
-    }
-  };
+  useEffect(() => {
+    dispatch(fetchCustomers());
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -45,99 +47,113 @@ export function CustomerTable({ customers, fetchCustomers }) {
     fetchUserRole();
   }, []);
 
-  if (role === "") {
-    // Display loading message while role is being fetched
-    return <p>Loading...</p>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[150px]">Name</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Location</TableHead>
-          <TableHead>Phone</TableHead>
-          <TableHead>Created</TableHead>
-          <TableHead>Action</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {customers.map((customer) => (
-          <TableRow key={customer.id}>
-            <TableCell className="font-medium">{customer.name}</TableCell>
-            <TableCell>{customer.email}</TableCell>
-            <TableCell>
-              {customer.city}, {customer.country}
-            </TableCell>
-            <TableCell>{customer.phone}</TableCell>
-            <TableCell>{customer.date_created.slice(0, 10)}</TableCell>
-            <TableCell className="flex justify-between items-center gap-2">
-              <span
-                className="cursor-pointer text-blue-400"
-                onClick={() => setSelectedCustomer(customer)}
-              >
-                <SquarePen size="20px" />
-              </span>
-              <span className="cursor-pointer text-red-600">
-                <Dialog>
-                  <DialogTrigger>
-                    <Trash2 size="20px" />
-                  </DialogTrigger>
+    <>
+      {role === "" ? (
+        <>
+          <p>Loading...</p>
+        </>
+      ) : (
+        <>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[150px]">Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Created</TableHead>
+                <TableHead>Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {list.map((customer) => (
+                <TableRow key={customer.id}>
+                  <TableCell className="font-medium">{customer.name}</TableCell>
+                  <TableCell>{customer.email}</TableCell>
+                  <TableCell>
+                    {customer.city}, {customer.country}
+                  </TableCell>
+                  <TableCell>{customer.phone}</TableCell>
+                  <TableCell>{customer.date_created.slice(0, 10)}</TableCell>
+                  <TableCell className="flex justify-between items-center gap-2">
+                    <span
+                      className="cursor-pointer text-blue-400"
+                      onClick={() => setSelectedCustomer(customer)}
+                    >
+                      <SquarePen size="20px" />
+                    </span>
+                    <span className="cursor-pointer text-red-600">
+                      <Dialog>
+                        <DialogTrigger>
+                          <Trash2 size="20px" />
+                        </DialogTrigger>
 
-                  {role === "Tester" ? (
-                    <>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Warning!</DialogTitle>
-                        </DialogHeader>
-                        <DialogDescription>
-                          You do not have permission to delete the customer.
-                        </DialogDescription>
-                      </DialogContent>
-                    </>
-                  ) : (
-                    <>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Are you absolutely sure?</DialogTitle>
-                        </DialogHeader>
-                        <DialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete this Customer and remove the data from our
-                          servers.
-                        </DialogDescription>
-                        <Button onClick={() => handleDelete(customer.id)}>
-                          Delete
-                        </Button>
-                      </DialogContent>
-                    </>
-                  )}
-                </Dialog>
-              </span>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-      {selectedCustomer && (
-        <Dialog
-          open={selectedCustomer !== null}
-          onOpenChange={() => setSelectedCustomer(null)}
-        >
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Edit Customer</DialogTitle>
-            </DialogHeader>
-            <DialogDescription></DialogDescription>
-            <CustomerEditForm
-              customer={selectedCustomer}
-              onClose={() => setSelectedCustomer(null)}
-              fetchCustomers={fetchCustomers}
-            />
-          </DialogContent>
-        </Dialog>
+                        {role === "Tester" ? (
+                          <>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Warning!</DialogTitle>
+                              </DialogHeader>
+                              <DialogDescription>
+                                You do not have permission to delete the
+                                customer.
+                              </DialogDescription>
+                            </DialogContent>
+                          </>
+                        ) : (
+                          <>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>
+                                  Are you absolutely sure?
+                                </DialogTitle>
+                              </DialogHeader>
+                              <DialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete this Customer and remove the
+                                data from our servers.
+                              </DialogDescription>
+                              <Button
+                                onClick={() =>
+                                  dispatch(deleteCustomer(customer.id))
+                                }
+                              >
+                                Delete
+                              </Button>
+                            </DialogContent>
+                          </>
+                        )}
+                      </Dialog>
+                    </span>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            {selectedCustomer && (
+              <Dialog
+                open={selectedCustomer !== null}
+                onOpenChange={() => setSelectedCustomer(null)}
+              >
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Edit Customer</DialogTitle>
+                  </DialogHeader>
+                  <DialogDescription></DialogDescription>
+                  <CustomerEditForm
+                    customer={selectedCustomer}
+                    onClose={() => setSelectedCustomer(null)}
+                  />
+                </DialogContent>
+              </Dialog>
+            )}
+          </Table>
+        </>
       )}
-    </Table>
+    </>
   );
 }
 

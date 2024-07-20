@@ -1,28 +1,12 @@
 import { Plus, Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import CustomerTable from "./CustomerTable";
-import api from "@/utils/api";
 import CustomerCreateForm from "./CustomerCreateForm";
 
 const Customers = () => {
-  const [customers, setCustomers] = useState([]);
   const [formToggle, setFormToggle] = useState(false);
-
-  const fetchCustomers = async () => {
-    try {
-      const response = await api.get("/api/customers/");
-      console.log(response);
-      setCustomers(response.data.Customers);
-    } catch (error) {
-      console.error("Failed to fetch user role:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
 
   return (
     <>
@@ -53,7 +37,7 @@ const Customers = () => {
         </section>
         <section className="mt-6 px-3">
           <div className="border rounded-3xl shadow p-3">
-            <CustomerTable customers={customers} fetchCustomers={fetchCustomers}  />
+            <CustomerTable />
           </div>
           <h2 className="text-zinc-600 text-sm flex justify-center relative top-8">
             A list of your recent customers.
@@ -63,7 +47,10 @@ const Customers = () => {
 
       {formToggle ? (
         <div className="fixed w-full h-screen top-0 left-0 bg-zinc-900/60 flex justify-center items-center ">
-          <CustomerCreateForm setFormToggle={setFormToggle} fetchCustomers={fetchCustomers} formToggle={formToggle} />
+          <CustomerCreateForm
+            setFormToggle={setFormToggle}
+            formToggle={formToggle}
+          />
         </div>
       ) : (
         ""

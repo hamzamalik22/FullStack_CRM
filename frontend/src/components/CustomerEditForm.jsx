@@ -4,13 +4,16 @@ import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import api from "@/utils/api";
+import { useDispatch } from "react-redux";
+import { fetchCustomers } from "@/store/actions/CustomerActions";
 
-const CustomerEditForm = ({ customer, onClose, fetchCustomers }) => {
+const CustomerEditForm = ({ customer, onClose }) => {
   const { register, handleSubmit, reset } = useForm({
     defaultValues: customer,
   });
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     reset(customer);
@@ -35,7 +38,7 @@ const CustomerEditForm = ({ customer, onClose, fetchCustomers }) => {
       console.log("PUT request URL:", url);
       console.log("PUT request data:", data);
       await api.put(url, data);
-      fetchCustomers(); // Refresh the customer list
+      dispatch(fetchCustomers()); // Refresh the customer list
       onClose();
     } catch (error) {
       console.log(error);
