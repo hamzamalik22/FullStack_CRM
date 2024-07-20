@@ -18,30 +18,22 @@ import {
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { fetchCustomers } from "@/store/actions/CustomerActions";
+import { fetchOrders } from "@/store/actions/OrderActions";
 
-const OrderEditForm = ({ order, onClose, fetchOrders }) => {
+const OrderEditForm = ({ order, onClose }) => {
   const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: order,
   });
   const [loading, setLoading] = useState(false);
-  const [customers, setCustomers] = useState([]);
   const [role, setRole] = useState("");
+  const dispatch = useDispatch();
+  const { customerList } = useSelector((state) => state.customers);
 
   useEffect(() => {
     reset(order);
   }, [order, reset]);
-
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const response = await api.get("/api/customers/");
-        setCustomers(response.data.Customers);
-      } catch (error) {
-        console.error("Failed to fetch customers:", error);
-      }
-    };
-    fetchCustomers();
-  }, []);
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -62,7 +54,7 @@ const OrderEditForm = ({ order, onClose, fetchOrders }) => {
       console.log("PUT request URL:", url);
       console.log("PUT request data:", data);
       await api.put(url, data);
-      fetchOrders(); // Refresh the order list
+      dispatch(fetchOrders()); // Refresh the order list
       onClose();
     } catch (error) {
       console.log(error);
@@ -71,8 +63,11 @@ const OrderEditForm = ({ order, onClose, fetchOrders }) => {
     }
   };
 
+  useEffect(() => {
+    dispatch(fetchCustomers());
+  }, [dispatch]);
+
   if (role === "") {
-    // Display loading message while role is being fetched
     return <p>Loading...</p>;
   }
 
@@ -98,7 +93,7 @@ const OrderEditForm = ({ order, onClose, fetchOrders }) => {
                       <SelectValue placeholder="Select Customer" />
                     </SelectTrigger>
                     <SelectContent>
-                      {customers.map((cust) => (
+                      {customerList.map((cust) => (
                         <SelectItem key={cust.id} value={cust.id}>
                           {cust.name}
                         </SelectItem>

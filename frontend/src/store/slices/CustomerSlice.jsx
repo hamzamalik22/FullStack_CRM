@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const customerSlice = createSlice({
   name: "customers",
   initialState: {
-    list: [],
+    customerList: [],
     loading: false,
     error: null,
   },
@@ -15,7 +15,7 @@ const customerSlice = createSlice({
       state.error = null;
     },
     getCustomersSuccess: (state, action) => {
-      state.list = action.payload;
+      state.customerList = action.payload;
       state.loading = false;
     },
     getCustomersFailure: (state, action) => {
@@ -29,7 +29,7 @@ const customerSlice = createSlice({
       state.error = null;
     },
     createCustomerSuccess: (state, action) => {
-      state.list.push(action.payload);
+      state.customerList.push(action.payload);
       state.loading = false;
     },
     createCustomerFailure: (state, action) => {
@@ -43,9 +43,9 @@ const customerSlice = createSlice({
       state.error = null;
     },
     updateCustomerSuccess: (state, action) => {
-      const index = state.list.findIndex((customer) => customer.id === action.payload.id);
+      const index = state.customerList.findIndex((customer) => customer.id === action.payload.id);
       if (index !== -1) {
-        state.list[index] = action.payload;
+        state.customerList[index] = action.payload;
       }
       state.loading = false;
     },
@@ -60,7 +60,7 @@ const customerSlice = createSlice({
       state.error = null;
     },
     deleteCustomerSuccess: (state, action) => {
-      state.list = state.list.filter((customer) => customer.id !== action.payload);
+      state.customerList = state.customerList.filter((customer) => customer.id !== action.payload);
       state.loading = false;
     },
     deleteCustomerFailure: (state, action) => {

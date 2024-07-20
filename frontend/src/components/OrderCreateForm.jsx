@@ -20,23 +20,18 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "@/utils/api";
 import { X } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCustomers } from "@/store/actions/CustomerActions";
+import { fetchOrders } from "@/store/actions/OrderActions";
 
-const OrderCreateForm = ({ setFormToggle, formToggle, fetchOrders }) => {
-  const { register, handleSubmit, reset, setValue } = useForm();
-  const [customers, setCustomers] = useState([]);
+const OrderCreateForm = ({ setFormToggle, formToggle }) => {
+  const { register, handleSubmit, setValue } = useForm();
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { customerList } = useSelector((state) => state.customers);
 
   useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const response = await api.get("/api/customers/");
-        setCustomers(response.data.Customers);
-      } catch (error) {
-        console.error("Failed to fetch customers:", error);
-      }
-    };
-
     const fetchUserRole = async () => {
       try {
         const response = await api.get("/api/agent/role/");
@@ -46,9 +41,12 @@ const OrderCreateForm = ({ setFormToggle, formToggle, fetchOrders }) => {
       }
     };
 
-    fetchCustomers();
     fetchUserRole();
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchCustomers());
+  }, [dispatch]);
 
   const handleFormSubmit = async (data) => {
     setLoading(true);
@@ -60,7 +58,7 @@ const OrderCreateForm = ({ setFormToggle, formToggle, fetchOrders }) => {
       };
       const response = await api.post("/api/orders/", requestData);
       if (response.status === 201) {
-        fetchOrders(); // Refresh the order list
+        dispatch(fetchOrders()); // Refresh the order list
         setFormToggle(!formToggle); // Close the form
       }
     } catch (error) {
@@ -71,7 +69,6 @@ const OrderCreateForm = ({ setFormToggle, formToggle, fetchOrders }) => {
   };
 
   if (role === "") {
-    // Display loading message while role is being fetched
     return <p>Loading...</p>;
   }
 
@@ -108,7 +105,7 @@ const OrderCreateForm = ({ setFormToggle, formToggle, fetchOrders }) => {
                       <SelectValue placeholder="Select Customer" />
                     </SelectTrigger>
                     <SelectContent>
-                      {customers.map((cust) => (
+                      {customerList.map((cust) => (
                         <SelectItem key={cust.id} value={cust.id}>
                           {cust.name}
                         </SelectItem>

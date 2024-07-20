@@ -29,7 +29,7 @@ export function CustomerTable() {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [role, setRole] = useState("");
   const dispatch = useDispatch();
-  const { list, loading, error } = useSelector((state) => state.customers);
+  const { customerList, loading, error } = useSelector((state) => state.customers);
 
   useEffect(() => {
     dispatch(fetchCustomers());
@@ -70,7 +70,7 @@ export function CustomerTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {list.map((customer) => (
+              {customerList.map((customer) => (
                 <TableRow key={customer.id}>
                   <TableCell className="font-medium">{customer.name}</TableCell>
                   <TableCell>{customer.email}</TableCell>

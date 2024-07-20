@@ -20,21 +20,16 @@ import { SquarePen, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import api from "@/utils/api";
 import OrderEditForm from "./OrderEditForm";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchOrders, deleteOrder } from "@/store/actions/OrderActions";
+import { fetchCustomers } from "@/store/actions/CustomerActions";
 
-export function OrderTable({ orders, fetchOrders }) {
+export function OrderTable() {
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [customers, setCustomers] = useState([]);
   const [role, setRole] = useState("");
-
-  // Fetch customers
-  const fetchCustomers = async () => {
-    try {
-      const response = await api.get("/api/customers/");
-      setCustomers(response.data.Customers);
-    } catch (error) {
-      console.error("Failed to fetch customers:", error);
-    }
-  };
+  const dispatch = useDispatch();
+  const { orderList, loading, error } = useSelector((state) => state.orders);
+  const { customerList } = useSelector((state) => state.customers);
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -49,28 +44,22 @@ export function OrderTable({ orders, fetchOrders }) {
   }, []);
 
   useEffect(() => {
-    fetchCustomers();
-  }, []);
-
-  if (role === "") {
-    // Display loading message while role is being fetched
-    return <p>Loading...</p>;
-  }
+    dispatch(fetchOrders());
+    dispatch(fetchCustomers());
+  }, [dispatch]);
 
   // Find customer name by ID
   const getCustomerName = (customerId) => {
-    const customer = customers.find((c) => c.id === customerId);
+    const customer = customerList.find((c) => c.id === customerId);
     return customer ? customer.name : "Unknown Customer";
   };
 
-  const handleDelete = async (orderId) => {
-    try {
-      await api.delete(`/api/orders/${orderId}`);
-      fetchOrders();
-    } catch (error) {
-      console.error("Failed to delete order:", error);
-    }
-  };
+  if (role === "") {
+    return <p>Loading...</p>;
+  }
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <Table>
@@ -85,7 +74,7 @@ export function OrderTable({ orders, fetchOrders }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {orders.map((order) => (
+        {orderList.map((order) => (
           <TableRow key={order.id}>
             <TableCell className="font-medium">ORD-{order.id}</TableCell>
             <TableCell>{getCustomerName(order.customer)}</TableCell>
@@ -128,7 +117,7 @@ export function OrderTable({ orders, fetchOrders }) {
                           delete this Order and remove the data from our
                           servers.
                         </DialogDescription>
-                        <Button onClick={() => handleDelete(order.id)}>
+                        <Button onClick={() => dispatch(deleteOrder(order.id))}>
                           Delete
                         </Button>
                       </DialogContent>
@@ -153,7 +142,6 @@ export function OrderTable({ orders, fetchOrders }) {
             <OrderEditForm
               order={selectedOrder}
               onClose={() => setSelectedOrder(null)}
-              fetchOrders={fetchOrders}
             />
           </DialogContent>
         </Dialog>

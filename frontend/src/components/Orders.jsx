@@ -4,26 +4,9 @@ import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import OrderTable from "./OrderTable";
 import OrderCreateForm from "./OrderCreateForm";
-import api from "@/utils/api";
 
 const Orders = () => {
-  const [orders, setOrders] = useState([]);
   const [formToggle, setFormToggle] = useState(false);
-
-  const fetchOrders = async () => {
-    try {
-      const response = await api.get("/api/orders/");
-      console.log(response);
-      setOrders(response.data.Orders);
-    } catch (error) {
-      console.error("Failed to fetch customers:", error);
-      setError("Failed to load customers. Please try again.");
-    }
-  };
-
-  useEffect(() => {
-    fetchOrders();
-  }, []);
 
   return (
     <>
@@ -54,7 +37,7 @@ const Orders = () => {
         </section>
         <section className="mt-6 px-3">
           <div className="border rounded-3xl shadow p-3">
-            <OrderTable orders={orders} fetchOrders={fetchOrders} />
+            <OrderTable />
           </div>
           <h2 className="text-zinc-600 text-sm flex justify-center relative top-8">
             A list of your recent orders.
@@ -67,7 +50,6 @@ const Orders = () => {
           <OrderCreateForm
             setFormToggle={setFormToggle}
             formToggle={formToggle}
-            fetchOrders={fetchOrders}
           />
         </div>
       ) : (
