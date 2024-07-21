@@ -23,7 +23,6 @@ export const fetchAgent = (id) => async (dispatch) => {
 export const fetchUserRole = () => async (dispatch) => {
   try {
     const response = await api.get("/api/agent/role/");
-    // console.log("gamer", response);
     dispatch(getUserRoleSuccess(response.data.role.role));
     return response.data.role.id;
   } catch (error) {

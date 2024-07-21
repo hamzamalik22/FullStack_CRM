@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const AccountForm = ({ data }) => {
   if (!data) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   const { register, handleSubmit, setValue } = useForm({

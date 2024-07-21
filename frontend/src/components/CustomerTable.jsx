@@ -24,6 +24,7 @@ import {
   deleteCustomer,
 } from "@/store/actions/CustomerActions";
 import { fetchUserRole } from "@/store/actions/AgentActions";
+import { ThreeDots } from "react-loader-spinner";
 
 export function CustomerTable() {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -42,7 +43,25 @@ export function CustomerTable() {
     dispatch(fetchUserRole());
   }, [dispatch]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div>
+        <div>
+          <div className="flex justify-center">
+            <ThreeDots
+              visible={true}
+              height="80"
+              width="80"
+              color="#36454F"
+              radius="9"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          </div>
+        </div>
+      </div>
+    );
   if (error) return <p>Error: {error}</p>;
 
   return (

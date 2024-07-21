@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders, deleteOrder } from "@/store/actions/OrderActions";
 import { fetchCustomers } from "@/store/actions/CustomerActions";
 import { fetchUserRole } from "@/store/actions/AgentActions";
+import { ThreeDots } from "react-loader-spinner";
 
 export function OrderTable() {
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -48,10 +49,43 @@ export function OrderTable() {
   };
 
   if (role === "") {
-    return <p>Loading...</p>;
+    return (
+      <>
+        <div className="flex justify-center">
+          <ThreeDots
+            visible={true}
+            height="80"
+            width="80"
+            color="#36454F"
+            radius="9"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        </div>
+      </>
+    );
   }
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div>
+        <div>
+          <div className="flex justify-center">
+            <ThreeDots
+              visible={true}
+              height="80"
+              width="80"
+              color="#36454F"
+              radius="9"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          </div>
+        </div>
+      </div>
+    );
   if (error) return <p>Error: {error}</p>;
 
   return (

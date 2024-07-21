@@ -1,8 +1,20 @@
 import React from "react";
+import { InfinitySpin } from "react-loader-spinner";
 
 const AccountCard = ({ data }) => {
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <div className="relative top-[100px] left-[360px]">
+          <InfinitySpin
+            visible={true}
+            width="200"
+            color="#36454F"
+            ariaLabel="infinity-spin-loading"
+          />
+        </div>
+      </div>
+    );
   }
   return (
     <div className="outer relative w-[296px] h-[249px] rounded-[20px] bg-transparent border border-gray dark:border-zinc-400 text-zinc-900 dark:text-zinc-300 py-5 px-6 overflow-hidden">
