@@ -1,57 +1,46 @@
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import api from "@/utils/api";
-import { useDispatch } from "react-redux";
-import { fetchCustomers } from "@/store/actions/CustomerActions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCustomers,
+  updateCustomer,
+} from "@/store/actions/CustomerActions";
+import { fetchUserRole } from "@/store/actions/AgentActions";
 
 const CustomerEditForm = ({ customer, onClose }) => {
   const { register, handleSubmit, reset } = useForm({
     defaultValues: customer,
   });
-  const [role, setRole] = useState("");
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const role = useSelector((state) => state.agent.role);
+  const loading = useSelector((state) => state.customers.loading);
+  const error = useSelector((state) => state.customers.error);
 
   useEffect(() => {
     reset(customer);
   }, [customer, reset]);
 
   useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await api.get("/api/agent/role/");
-        setRole(response.data.role.role);
-      } catch (error) {
-        console.error("Failed to fetch user role:", error);
-      }
-    };
-    fetchUserRole();
-  }, []);
+    dispatch(fetchUserRole());
+  }, [dispatch]);
 
   const handleForm = async (data) => {
-    setLoading(true);
-    try {
-      const url = `/api/customers/${customer.id}`;
-      console.log("PUT request URL:", url);
-      console.log("PUT request data:", data);
-      await api.put(url, data);
-      dispatch(fetchCustomers()); // Refresh the customer list
-      onClose();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    dispatch(updateCustomer(customer.id, data)).then((res) => {
+      if (!error) {
+        dispatch(fetchCustomers());
+        onClose();
+      } else {
+        console.error(error.message);
+      }
+    });
   };
 
   if (role === "") {
-    // Display loading message while role is being fetched
     return <p>Loading...</p>;
   }
-
   return (
     <>
       {role === "Tester" ? (

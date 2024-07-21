@@ -7,49 +7,40 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
-import api from "@/utils/api";
+import { useEffect } from "react";
 import { X } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCustomers } from "@/store/actions/CustomerActions";
+import {
+  fetchCustomers,
+  createCustomer,
+} from "@/store/actions/CustomerActions";
 import { fetchUserRole } from "@/store/actions/AgentActions";
 
 const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
   const { register, handleSubmit } = useForm();
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const loading = useSelector((state) => state.customers.loading);
   const role = useSelector((state) => state.agent.role);
+  const error = useSelector((state) => state.customers.error);
 
   useEffect(() => {
     dispatch(fetchUserRole());
   }, [dispatch]);
 
   const handleForm = async (data) => {
-    setLoading(true);
-    const { name, email, city, country, phone } = data;
-    try {
-      const res = await api.post("/api/customers/", {
-        name,
-        email,
-        city,
-        country,
-        phone,
-      });
-
-      toast.success("Customer Created");
-      setFormToggle(false);
-      dispatch(fetchCustomers());
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    dispatch(createCustomer(data)).then((res) => {
+      if (!error) {
+        toast.success("Customer Created");
+        setFormToggle(false);
+        dispatch(fetchCustomers());
+      } else {
+        toast.error(error);
+      }
+    });
   };
 
   if (role === "") {
@@ -79,9 +70,7 @@ const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
             <CardContent>
               <div className="grid w-full items-center gap-4">
                 {role === "Tester" ? (
-                  <>
-                    <p>You do not have permission to create a customer.</p>
-                  </>
+                  <p>You do not have permission to create a customer.</p>
                 ) : (
                   <>
                     <section className="flex gap-5">
