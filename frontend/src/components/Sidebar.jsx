@@ -245,9 +245,13 @@ const Sidebar = () => {
                   </p>
                   <h1 className="font-semibold">{role}</h1>
                 </div>
-                <hr className="border-zinc-700 dark:border-gray-800 mt-4" />
-                <div className="flex justify-center items-center mt-4 cursor-pointer" onClick={toggleMobileSidebar}>
-                  <div className="flex gap-2 font-xl items-center">Menu <CaptionsOff size='20px' /></div>
+                <div
+                  className="flex justify-center items-center mt-4 cursor-pointer"
+                  onClick={toggleMobileSidebar}
+                >
+                  <div className="flex gap-2 font-xl items-center">
+                    Menu <CaptionsOff size="20px" />
+                  </div>
                 </div>
               </div>
             </div>

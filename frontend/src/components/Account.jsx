@@ -26,7 +26,7 @@ const Account = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="h-full ">
+    <div className="h-full">
       <div className="pt-8 sm:px-6 lg:px-8 flex justify-between">
         <h1 className="text-3xl font-medium tracking-tight">Account</h1>
       </div>

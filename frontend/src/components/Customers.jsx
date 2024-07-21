@@ -10,8 +10,8 @@ const Customers = () => {
 
   return (
     <>
-      <div className="h-full sm:p-4 pb-0">
-        <section className="pt-8 sm:px-3">
+      <div className="h-full sm:p-4 pb-0 ">
+        <section className="pt-8 sm:px-3 pr-3">
           <div className="flex justify-between">
             <h1 className="text-3xl font-medium tracking-tight">Customers</h1>
             <Button

@@ -28,7 +28,7 @@ const Settings = () => {
   return (
     <>
       <ToastContainer />
-      <div className="h-full p-4 pb-0">
+      <div className="h-full sm:p-4 p-0 pb-0">
         <section className="pt-8 px-3 sm:px-6">
           <div className="flex justify-between">
             <h1 className="text-3xl font-medium tracking-tight">Settings</h1>

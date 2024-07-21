@@ -9,7 +9,7 @@ const AccountForm = ({ data }) => {
     return <div></div>;
   }
 
-  const { register, handleSubmit, setValue } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       first_name: data.first_name,
       last_name: data.last_name,

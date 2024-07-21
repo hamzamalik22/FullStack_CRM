@@ -10,7 +10,7 @@ import Header from "@/components/Header";
 
 const Dashboard = () => {
   return (
-    <div className="flex">
+    <div className="flex overflow-x-auto sm:overflow-visible">
       <Sidebar />
       <div className="flex-grow ml-[22%]">
         <Header />
