@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
+  CaptionsOff,
   HeartHandshake,
   Menu,
+  Minimize,
   MonitorCog,
   PieChart,
   Settings,
@@ -245,8 +247,7 @@ const Sidebar = () => {
                 </div>
                 <hr className="border-zinc-700 dark:border-gray-800 mt-4" />
                 <div className="flex justify-center items-center mt-4 cursor-pointer" onClick={toggleMobileSidebar}>
-                  <div><Menu  /></div>
-                  <div>Menu</div>
+                  <div className="flex gap-2 font-xl items-center">Menu <CaptionsOff size='20px' /></div>
                 </div>
               </div>
             </div>

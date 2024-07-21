@@ -41,6 +41,7 @@ const CustomerEditForm = ({ customer, onClose }) => {
   if (role === "") {
     return <p>Loading...</p>;
   }
+  
   return (
     <>
       {role === "Tester" ? (
@@ -48,8 +49,8 @@ const CustomerEditForm = ({ customer, onClose }) => {
       ) : (
         <form onSubmit={handleSubmit(handleForm)}>
           <div className="grid gap-4">
-            <div className="flex gap-5">
-              <div className="flex flex-col space-y-1.5">
+            <div className="flex flex-col md:flex-row gap-5">
+              <div className="flex flex-col space-y-1.5 flex-1">
                 <Label htmlFor="name">Name</Label>
                 <Input
                   {...register("name")}
@@ -57,7 +58,7 @@ const CustomerEditForm = ({ customer, onClose }) => {
                   placeholder="e.g. John Doe"
                 />
               </div>
-              <div className="flex flex-col space-y-1.5">
+              <div className="flex flex-col space-y-1.5 flex-1">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   {...register("email")}
@@ -66,8 +67,8 @@ const CustomerEditForm = ({ customer, onClose }) => {
                 />
               </div>
             </div>
-            <div className="flex gap-5">
-              <div className="flex flex-col space-y-1.5">
+            <div className="flex flex-col md:flex-row gap-5">
+              <div className="flex flex-col space-y-1.5 flex-1">
                 <Label htmlFor="city">City</Label>
                 <Input
                   {...register("city")}
@@ -75,7 +76,7 @@ const CustomerEditForm = ({ customer, onClose }) => {
                   placeholder="e.g. Hamburg"
                 />
               </div>
-              <div className="flex flex-col space-y-1.5">
+              <div className="flex flex-col space-y-1.5 flex-1">
                 <Label htmlFor="country">Country</Label>
                 <Input
                   {...register("country")}
@@ -84,8 +85,8 @@ const CustomerEditForm = ({ customer, onClose }) => {
                 />
               </div>
             </div>
-            <div className="flex gap-5">
-              <div className="flex flex-col space-y-1.5">
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col space-y-1.5 flex-1">
                 <Label htmlFor="phone">Phone</Label>
                 <Input
                   {...register("phone")}

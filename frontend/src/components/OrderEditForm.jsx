@@ -71,56 +71,60 @@ const OrderEditForm = ({ order, onClose }) => {
         <p>You do not have permission to edit an order.</p>
       ) : (
         <form onSubmit={handleSubmit(handleForm)}>
-          <Card className="w-[450px]">
+          <Card className="w-full max-w-lg mx-auto">
             <CardHeader>
-              <CardTitle>Edit order</CardTitle>
+              <CardTitle>Edit Order</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid w-full items-center gap-4">
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="customer">Customer</Label>
-                  <Select
-                    {...register("customer.id")}
-                    onValueChange={(value) => setValue("customer.id", value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Customer" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {customerList.map((cust) => (
-                        <SelectItem key={cust.id} value={cust.id}>
-                          {cust.name}
+              <div className="grid gap-4">
+                <div className="flex flex-col md:flex-row md:gap-5">
+                  <div className="flex flex-col space-y-1.5 flex-1">
+                    <Label htmlFor="customer">Customer</Label>
+                    <Select
+                      {...register("customer.id")}
+                      onValueChange={(value) => setValue("customer.id", value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Customer" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {customerList.map((cust) => (
+                          <SelectItem key={cust.id} value={cust.id}>
+                            {cust.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex flex-col space-y-1.5 flex-1">
+                    <Label htmlFor="status">Status</Label>
+                    <Select
+                      {...register("status")}
+                      onValueChange={(value) => setValue("status", value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Pending">Pending</SelectItem>
+                        <SelectItem value="Out for delivery">
+                          Out for delivery
                         </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                        <SelectItem value="Delivered">Delivered</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="status">Status</Label>
-                  <Select
-                    {...register("status")}
-                    onValueChange={(value) => setValue("status", value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Pending">Pending</SelectItem>
-                      <SelectItem value="Out for delivery">
-                        Out for delivery
-                      </SelectItem>
-                      <SelectItem value="Delivered">Delivered</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="amount">Total Amount</Label>
-                  <Input
-                    {...register("total_amount")}
-                    type="number"
-                    id="amount"
-                    placeholder="e.g. $279"
-                  />
+                <div className="flex flex-col md:flex-row md:gap-5">
+                  <div className="flex flex-col space-y-1.5 flex-1">
+                    <Label htmlFor="amount">Total Amount</Label>
+                    <Input
+                      {...register("total_amount")}
+                      type="number"
+                      id="amount"
+                      placeholder="e.g. $279"
+                    />
+                  </div>
                 </div>
               </div>
             </CardContent>

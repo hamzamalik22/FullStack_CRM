@@ -67,7 +67,7 @@ const OrderCreateForm = ({ setFormToggle, formToggle }) => {
 
   return (
     <div>
-      <Card className="w-[450px]">
+      <Card className="sm:w-[450px] w-full max-w-lg mx-auto ml-8 sm:ml-0">
         <CardHeader>
           <CardTitle>
             <div className="flex justify-between items-center">

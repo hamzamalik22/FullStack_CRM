@@ -52,10 +52,10 @@ const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
       <ToastContainer />
       <div>
         <form onSubmit={handleSubmit(handleForm)}>
-          <Card className="w-[450px]">
+          <Card className="w-full max-w-lg mx-auto ml-8 sm:ml-0">
             <CardHeader>
               <CardTitle>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-10 sm:gap-0">
                   <div>Create customer</div>
                   <div>
                     <X
@@ -68,13 +68,13 @@ const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid w-full items-center gap-4">
+              <div className="grid w-full items-center gap-">
                 {role === "Tester" ? (
                   <p>You do not have permission to create a customer.</p>
                 ) : (
                   <>
-                    <section className="flex gap-5">
-                      <div className="flex flex-col space-y-1.5">
+                    <section className="flex flex-col md:flex-row gap-5">
+                      <div className="flex flex-col space-y-1.5 flex-1">
                         <Label htmlFor="name">Name</Label>
                         <Input
                           {...register("name")}
@@ -82,7 +82,7 @@ const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
                           placeholder="e.g. John Doe"
                         />
                       </div>
-                      <div className="flex flex-col space-y-1.5">
+                      <div className="flex flex-col space-y-1.5 flex-1">
                         <Label htmlFor="email">Email</Label>
                         <Input
                           {...register("email")}
@@ -91,8 +91,8 @@ const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
                         />
                       </div>
                     </section>
-                    <section className="flex gap-5">
-                      <div className="flex flex-col space-y-1.5">
+                    <section className="flex flex-col md:flex-row gap-5">
+                      <div className="flex flex-col space-y-1.5 flex-1">
                         <Label htmlFor="city">City</Label>
                         <Input
                           {...register("city")}
@@ -100,7 +100,7 @@ const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
                           placeholder="e.g. Hamburg"
                         />
                       </div>
-                      <div className="flex flex-col space-y-1.5">
+                      <div className="flex flex-col space-y-1.5 flex-1">
                         <Label htmlFor="country">Country</Label>
                         <Input
                           {...register("country")}
@@ -109,8 +109,8 @@ const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
                         />
                       </div>
                     </section>
-                    <section className="flex gap-5">
-                      <div className="flex flex-col space-y-1.5">
+                    <section className="flex flex-col md:flex-row gap-5">
+                      <div className="flex flex-col space-y-1.5 flex-1">
                         <Label htmlFor="phone">Phone</Label>
                         <Input
                           {...register("phone")}
