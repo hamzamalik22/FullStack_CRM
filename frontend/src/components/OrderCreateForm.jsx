@@ -23,26 +23,19 @@ import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "@/store/actions/CustomerActions";
 import { fetchOrders } from "@/store/actions/OrderActions";
+import { fetchUserRole } from "@/store/actions/AgentActions";
 
 const OrderCreateForm = ({ setFormToggle, formToggle }) => {
   const { register, handleSubmit, setValue } = useForm();
-  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { customerList } = useSelector((state) => state.customers);
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await api.get("/api/agent/role/");
-        setRole(response.data.role.role);
-      } catch (error) {
-        console.error("Failed to fetch user role:", error);
-      }
-    };
+  const role = useSelector((state) => state.agent.role);
 
-    fetchUserRole();
-  }, []);
+  useEffect(() => {
+    dispatch(fetchUserRole());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchCustomers());

@@ -18,34 +18,29 @@ import { useEffect, useState } from "react";
 import { SquarePen, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import CustomerEditForm from "./CustomerEditForm";
-import api from "@/utils/api";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCustomers,
   deleteCustomer,
 } from "@/store/actions/CustomerActions";
+import { fetchUserRole } from "@/store/actions/AgentActions";
 
 export function CustomerTable() {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [role, setRole] = useState("");
   const dispatch = useDispatch();
-  const { customerList, loading, error } = useSelector((state) => state.customers);
+  const { customerList, loading, error } = useSelector(
+    (state) => state.customers
+  );
 
   useEffect(() => {
     dispatch(fetchCustomers());
   }, [dispatch]);
 
+  const role = useSelector((state) => state.agent.role);
+
   useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await api.get("/api/agent/role/");
-        setRole(response.data.role.role);
-      } catch (error) {
-        console.error("Failed to fetch user role:", error);
-      }
-    };
-    fetchUserRole();
-  }, []);
+    dispatch(fetchUserRole());
+  }, [dispatch]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

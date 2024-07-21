@@ -14,27 +14,20 @@ import api from "@/utils/api";
 import { X } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "@/store/actions/CustomerActions";
+import { fetchUserRole } from "@/store/actions/AgentActions";
 
 const CustomerCreateForm = ({ setFormToggle, formToggle }) => {
   const { register, handleSubmit } = useForm();
-  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  const role = useSelector((state) => state.agent.role);
+
   useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await api.get("/api/agent/role/");
-        console.log(response);
-        setRole(response.data.role.role);
-      } catch (error) {
-        console.error("Failed to fetch user role:", error);
-      }
-    };
-    fetchUserRole();
-  }, []);
+    dispatch(fetchUserRole());
+  }, [dispatch]);
 
   const handleForm = async (data) => {
     setLoading(true);

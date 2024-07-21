@@ -18,16 +18,16 @@ import {
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "@/store/actions/CustomerActions";
 import { fetchOrders } from "@/store/actions/OrderActions";
+import { fetchUserRole } from "@/store/actions/AgentActions";
 
 const OrderEditForm = ({ order, onClose }) => {
   const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: order,
   });
   const [loading, setLoading] = useState(false);
-  const [role, setRole] = useState("");
   const dispatch = useDispatch();
   const { customerList } = useSelector((state) => state.customers);
 
@@ -35,17 +35,11 @@ const OrderEditForm = ({ order, onClose }) => {
     reset(order);
   }, [order, reset]);
 
+  const role = useSelector((state) => state.agent.role);
+
   useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await api.get("/api/agent/role/");
-        setRole(response.data.role.role);
-      } catch (error) {
-        console.error("Failed to fetch user role:", error);
-      }
-    };
-    fetchUserRole();
-  }, []);
+    dispatch(fetchUserRole());
+  }, [dispatch]);
 
   const handleForm = async (data) => {
     setLoading(true);
