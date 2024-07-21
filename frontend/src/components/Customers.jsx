@@ -10,8 +10,8 @@ const Customers = () => {
 
   return (
     <>
-      <div className="h-full p-4 pb-0">
-        <section className="pt-8 px-3">
+      <div className="h-full sm:p-4 pb-0">
+        <section className="pt-8 sm:px-3">
           <div className="flex justify-between">
             <h1 className="text-3xl font-medium tracking-tight">Customers</h1>
             <Button
@@ -25,8 +25,8 @@ const Customers = () => {
             </Button>
           </div>
         </section>
-        <section className="mt-6 px-3">
-          <div className="w-[100%] flex items-center gap-3  border rounded-lg shadow p-4">
+        <section className="mt-6 sm:px-3">
+          <div className="w-[32%] sm:w-[100%] flex items-center gap-3  border rounded-lg shadow p-4">
             <span>
               <Search size="20px" />
             </span>
@@ -35,11 +35,11 @@ const Customers = () => {
             </div>
           </div>
         </section>
-        <section className="mt-6 px-3">
-          <div className="border rounded-3xl shadow p-3">
+        <section className="mt-6 sm:px-3">
+          <div className="border rounded-3xl shadow p-3 overflow-x-auto ">
             <CustomerTable />
           </div>
-          <h2 className="text-zinc-600 text-sm flex justify-center relative top-8">
+          <h2 className="text-zinc-600 text-sm flex sm:justify-center justify-normal px-2 relative top-8">
             A list of your recent customers.
           </h2>
         </section>

@@ -28,7 +28,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="fixed md:hidden left-0 top-0 h-full w-16 bg-[#121621] dark:bg-gray-900 text-white dark:text-gray-300 flex flex-col items-center">
+      <div className="z-20 fixed md:hidden left-0 top-0 h-full w-16 bg-[#121621] dark:bg-gray-900 text-white dark:text-gray-300 flex flex-col items-center">
         <button onClick={toggleMobileSidebar} className="mt-5">
           <Menu size="25px" />
         </button>
