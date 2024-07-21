@@ -22,9 +22,9 @@ const AccountForm = ({ data }) => {
 
   const onSubmit = async (formData) => {
     try {
-      console.log("Submitting form data:", formData); // Log the form data to inspect it
+      // console.log("Submitting form data:", formData); // Log the form data to inspect it
       const response = await api.put(`/api/agents/${data.id}`, formData);
-      console.log("Agent updated successfully:", response);
+      // console.log("Agent updated successfully:", response);
       toast.success("Account Updated, Refresh");
     } catch (error) {
       console.error("Failed to update agent:", error.response.data);

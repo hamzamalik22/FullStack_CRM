@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +29,7 @@ SECRET_KEY = "django-insecure-w5ex=rmr#@g(g9)%61@z7ehi+ys9wpy)a=eebtz7=l$r_)mgx)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,7 +44,7 @@ INSTALLED_APPS = [
 ]
 
 EXTERNAL_APPS = [
-    # "drf_redesign",
+    "whitenoise.runserver_nostatic",
     "api.apps.ApiConfig",
     "rest_framework",
     "rest_framework_simplejwt",
@@ -53,6 +56,7 @@ INSTALLED_APPS += EXTERNAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -93,6 +97,8 @@ DATABASES = {
     }
 }
 
+
+DATABASES["default"] = dj_database_url.config()
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -171,11 +177,14 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# STATIC_DIRS = [os.path.join(BASE_DIR, '')]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 
 CORS_ALLOW_ALL_ORIGINS = True

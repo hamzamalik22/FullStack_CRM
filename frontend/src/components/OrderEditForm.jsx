@@ -45,8 +45,8 @@ const OrderEditForm = ({ order, onClose }) => {
     setLoading(true);
     try {
       const url = `/api/orders/${order.id}`;
-      console.log("PUT request URL:", url);
-      console.log("PUT request data:", data);
+      // console.log("PUT request URL:", url);
+      // console.log("PUT request data:", data);
       await api.put(url, data);
       dispatch(fetchOrders()); // Refresh the order list
       onClose();
