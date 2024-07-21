@@ -5,14 +5,19 @@ import {
   LineChart,
   CheckSquare,
   MessageCircle,
-  Star,
-  Search,
+  Menu,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import dashboard from "../images/Dashboard.png";
 
 const HomePage = () => {
   const [theme, setTheme] = useState("light");
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (theme === "dark") {
@@ -26,63 +31,90 @@ const HomePage = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  const Logout = () => {
-    localStorage.clear();
-    navigate("/login");
-  };
-
   return (
     <>
       <div className="w-full min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-        <nav className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-10">
-          <div className="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center">
-            <div className="flex justify-between items-center">
-              <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
-                <Link to="/">CRMAX</Link>
-              </div>
-              <div className="md:hidden">
-                <button
-                  type="button"
-                  className="text-gray-800 dark:text-gray-200 hover:text-gray-700 focus:outline-none focus:text-gray-700"
-                >
-                  <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
-                    <path
-                      className="hidden"
-                      d="M16.24 14.83a1 1 0 0 1-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 0 1-1.41-1.41L10.59 12 7.76 9.17a1 1 0 0 1 1.41-1.41L12 10.59l2.83-2.83a1 1 0 0 1 1.41 1.41L13.41 12l2.83 2.83z"
-                    />
-                    <path d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z" />
-                  </svg>
-                </button>
-              </div>
+        <nav className="hidden md:block bg-white dark:bg-gray-800 shadow-lg fixed w-full z-10">
+          <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+              <Link to="/">CRMAX</Link>
             </div>
-            <div className="md:flex items-center">
+            <div className="flex items-center space-x-4">
               <Link
                 to="/login"
-                className="text-gray-800 dark:text-gray-200 rounded hover:bg-indigo-600 hover:text-white py-2 px-4 md:mx-2"
+                className="text-gray-800 dark:text-gray-200 rounded hover:bg-indigo-600 hover:text-white py-2 px-4"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="text-gray-800 dark:text-gray-200 rounded hover:bg-indigo-600 hover:text-white py-2 px-4 md:mx-2"
+                className="text-gray-800 dark:text-gray-200 rounded hover:bg-indigo-600 hover:text-white py-2 px-4"
               >
                 Register
               </Link>
               <a
                 target="_blank"
                 href="https://groqunofficial.vercel.app/about"
-                className="text-gray-800 dark:text-gray-200 rounded hover:bg-indigo-600 hover:text-white py-2 px-4 md:mx-2"
+                className="text-gray-800 dark:text-gray-200 rounded hover:bg-indigo-600 hover:text-white py-2 px-4"
               >
                 About
               </a>
-              <div className="flex items-center ml-4">
+              <div className="flex items-center">
                 <Switch onClick={handleThemeSwitch} />
               </div>
             </div>
           </div>
         </nav>
-        <div className="container mx-auto flex flex-col lg:flex-row items-center min-h-screen py-12 lg:py-24">
-          <div className="lg:w-1/2 text-center lg:text-left px-6">
+        <nav className="block md:hidden bg-white dark:bg-gray-800 shadow-lg p-3 fixed w-full z-10">
+          <div className="flex justify-between items-center">
+            <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+              <Link to="/">CRMAX</Link>
+            </div>
+            <div className="flex gap-4 flex-row-reverse">
+              <div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Menu />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>
+                      <Link
+                        to="/login"
+                        className="text-gray-800 dark:text-gray-200 rounded hover:underline hover:text-purple-500  py-2 px-4"
+                      >
+                        Login
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      {" "}
+                      <Link
+                        to="/register"
+                        className="text-gray-800 dark:text-gray-200 rounded hover:underline hover:text-purple-500 py-2 px-4"
+                      >
+                        Register
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      {" "}
+                      <a
+                        target="_blank"
+                        href="https://groqunofficial.vercel.app/about"
+                        className="text-gray-800 dark:text-gray-200 rounded hover:underline hover:text-purple-500 py-2 px-4"
+                      >
+                        About
+                      </a>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div>
+                <Switch onClick={handleThemeSwitch} />
+              </div>
+            </div>
+          </div>
+        </nav>
+        <div className="container mx-auto  flex flex-col lg:flex-row items-center min-h-screen pt-20 py-12 lg:py-24 px-6">
+          <div className="lg:w-1/2 text-center lg:text-left">
             <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 md:text-5xl">
               Welcome to{" "}
               <span className="text-indigo-600 dark:text-indigo-400">
@@ -93,7 +125,7 @@ const HomePage = () => {
               CRMAX helps you manage your customer relationships with ease.
               Track interactions, streamline processes, and grow your business.
             </p>
-            <div className="mt-8 flex justify-center lg:justify-start">
+            <div className="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
               <Link
                 to="/register"
                 className="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700"
@@ -102,7 +134,7 @@ const HomePage = () => {
               </Link>
               <Link
                 to="/dashboard"
-                className="ml-4 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-100 px-6 py-3 rounded-lg shadow hover:bg-gray-400 dark:hover:bg-gray-600"
+                className="bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-100 px-6 py-3 rounded-lg shadow hover:bg-gray-400 dark:hover:bg-gray-600"
               >
                 Dashboard
               </Link>
@@ -110,18 +142,18 @@ const HomePage = () => {
           </div>
           <div className="lg:w-1/2 mt-12 lg:mt-0">
             <img
-              src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80"
+              src={dashboard}
               alt="CRM Illustration"
               className="w-full h-auto rounded-lg shadow-lg"
             />
           </div>
         </div>
-        <section className="bg-white dark:bg-gray-800 py-12">
-          <div className="container mx-auto px-6">
+        <section className="bg-white dark:bg-gray-800 py-12 px-6">
+          <div className="container mx-auto">
             <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 md:text-4xl text-center">
               Key Features
             </h2>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6 text-center">
                 <Users className="text-4xl text-indigo-600 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
@@ -153,12 +185,12 @@ const HomePage = () => {
             </div>
           </div>
         </section>
-        <section className="bg-gray-100 dark:bg-gray-900 py-12">
-          <div className="container mx-auto px-6">
+        <section className="bg-gray-100 dark:bg-gray-900 py-12 px-6">
+          <div className="container mx-auto">
             <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 md:text-4xl text-center">
               Customer Testimonials
             </h2>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center">
                 <MessageCircle className="text-4xl text-indigo-600 mx-auto mb-4" />
                 <p className="text-gray-600 dark:text-gray-300 mt-2 italic">

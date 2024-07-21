@@ -19,11 +19,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export function Register() {
-  const { register, handleSubmit } = useForm();  // access react-form-hook components
-  const navigate = useNavigate();                // initialize navigate hook
+  const { register, handleSubmit } = useForm(); // access react-form-hook components
+  const navigate = useNavigate(); // initialize navigate hook
   const [Loading, setLoading] = useState(false); // useState for loading
 
-  useEffect(() => { // UseEffect checks that if user is logged in, then don't show register page and redirect it to dashboard
+  useEffect(() => {
+    // UseEffect checks that if user is logged in, then don't show register page and redirect it to dashboard
     const token = localStorage.getItem(ACCESS_TOKEN);
     if (token) {
       try {
@@ -38,12 +39,14 @@ export function Register() {
     }
   }, [navigate]);
 
-  const handleForm = async (data) => {  // This function hold the register logic
-    setLoading(true);                  // set loading to true
-    const { username, email, password } = data;  // capture the data that is coming from form & destructure that
+  const handleForm = async (data) => {
+    // This function hold the register logic
+    setLoading(true); // set loading to true
+    const { username, email, password } = data; // capture the data that is coming from form & destructure that
     console.log(data);
     try {
-      const res = await api.post("/api/register/", {  // making use of api.js and sending post request to register user api
+      const res = await api.post("/api/register/", {
+        // making use of api.js and sending post request to register user api
         username,
         email,
         password,
@@ -64,10 +67,10 @@ export function Register() {
           <House />
         </Link>
       </div>
-      <div className="w-full h-screen flex">
-        <div className="w-[50%] flex flex-col items-center justify-center dark:bg-zinc-900 bg-zinc-200">
-          <form onSubmit={handleSubmit(handleForm)}>
-            <Card className="w-full max-w-sm">
+      <div className="w-full h-screen flex flex-col lg:flex-row">
+        <div className="w-full h-full lg:w-[50%] flex flex-col items-center justify-center dark:bg-zinc-900 bg-zinc-200">
+          <form onSubmit={handleSubmit(handleForm)} className="w-full max-w-sm px-4">
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle className="text-2xl">Register</CardTitle>
                 <CardDescription>
@@ -107,7 +110,9 @@ export function Register() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Sign up</Button>
+                <Button className="w-full" type="submit">
+                  {Loading ? "Signing up..." : "Sign up"}
+                </Button>
               </CardFooter>
             </Card>
           </form>
@@ -118,7 +123,7 @@ export function Register() {
             </Link>
           </div>
         </div>
-        <div className="w-[50%] ">
+        <div className="hidden lg:block lg:w-[50%]">
           <img
             className="w-full h-full object-cover"
             src="https://images.unsplash.com/photo-1507207611509-ec012433ff52?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

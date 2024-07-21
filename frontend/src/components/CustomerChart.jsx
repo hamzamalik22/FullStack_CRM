@@ -52,7 +52,7 @@ const CustomerChart = () => {
   }, []);
 
   return (
-    <Card>
+    <Card className="w-full h-full">
       <CardHeader>
         <CardTitle>Customer Distribution</CardTitle>
         <CardDescription>Number of customers per city</CardDescription>

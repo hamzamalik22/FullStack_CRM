@@ -18,12 +18,13 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/utils/constants";
 import { jwtDecode } from "jwt-decode";
 
 export function Login() {
-  const { register, handleSubmit } = useForm();     // access react-form-hook
-  const navigate = useNavigate();                 // initialize navigate hook
+  const { register, handleSubmit } = useForm(); // access react-form-hook
+  const navigate = useNavigate(); // initialize navigate hook
   const [Loading, setLoading] = useState(false); // useState for loading
 
-  useEffect(() => { // UseEffect checks that if user is logged in, then don't show login page and redirect it to dashboard
-    const token = localStorage.getItem(ACCESS_TOKEN); 
+  useEffect(() => {
+    // UseEffect checks that if user is logged in, then don't show login page and redirect it to dashboard
+    const token = localStorage.getItem(ACCESS_TOKEN);
     if (token) {
       try {
         const decoded = jwtDecode(token);
@@ -37,17 +38,18 @@ export function Login() {
     }
   }, [navigate]);
 
-
-  const handleForm = async (data) => { // This function hold the register logic
+  const handleForm = async (data) => {
+    // This function hold the register logic
     setLoading(true); // set loading to true
     const { username, password } = data; // capture the data that is coming from the form & destructure that
     console.log(data);
     try {
-      const res = await api.post("/api/users/token/", { // making use of api.js and sending post request to token access api
+      const res = await api.post("/api/users/token/", {
+        // making use of api.js and sending post request to token access api
         username,
         password,
       });
-      
+
       console.log(res);
 
       localStorage.setItem(ACCESS_TOKEN, res.data.access); // store the access token to local storage
@@ -67,10 +69,10 @@ export function Login() {
           <House />
         </Link>
       </div>
-      <div className="w-full h-screen flex">
-        <div className="w-[50%] flex flex-col items-center justify-center dark:bg-zinc-900 bg-zinc-200">
-          <form onSubmit={handleSubmit(handleForm)}>
-            <Card className="w-full max-w-sm">
+      <div className="w-full h-screen flex flex-col lg:flex-row">
+        <div className="w-full h-full lg:w-[50%] flex flex-col items-center justify-center dark:bg-zinc-900 bg-zinc-200">
+          <form onSubmit={handleSubmit(handleForm)} className="w-full max-w-sm px-4">
+            <Card className="w-full " >
               <CardHeader>
                 <CardTitle className="text-2xl">Login</CardTitle>
                 <CardDescription>
@@ -100,7 +102,9 @@ export function Login() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Sign in</Button>
+                <Button className="w-full" type="submit">
+                  {Loading ? "Signing in..." : "Sign in"}
+                </Button>
               </CardFooter>
             </Card>
           </form>
@@ -111,7 +115,7 @@ export function Login() {
             </Link>
           </div>
         </div>
-        <div className="w-[50%] ">
+        <div className="hidden lg:block lg:w-[50%]">
           <img
             className="w-full h-full object-cover"
             src="https://images.unsplash.com/photo-1618544976528-6fe8b8a811b1?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

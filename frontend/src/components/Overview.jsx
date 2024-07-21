@@ -47,24 +47,23 @@ const Overview = () => {
     },
   ];
   return (
-    <>
-      <div className="h-full p-4">
-        <div className="flex gap-5 flex-shrink-0 py-3 px-2">
-          {listData.map((item, index) => (
-            <DashboardCard key={index} data={item} />
-          ))}
+    <div className="h-full p-4">
+      <div className="flex flex-wrap gap-5 flex-shrink-0 py-3 px-2">
+        {listData.map((item, index) => (
+          <DashboardCard key={index} data={item} />
+        ))}
+      </div>
+      <div className="flex flex-col lg:flex-row items-center justify-around gap-4">
+        <div className="w-full lg:w-[50%]">
+          <CustomerChart />
         </div>
-        <div className="flex items-center justify-around">
-          <div className="w-[50%]">
-            <CustomerChart />
-          </div>
-          <div>
-            <OrdersChart />
-          </div>
+        <div className="w-full lg:w-[50%]">
+          <OrdersChart />
         </div>
       </div>
-    </>
+    </div>
   );
 };
+
 
 export default Overview;

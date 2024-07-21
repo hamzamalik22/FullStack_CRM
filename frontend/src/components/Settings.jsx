@@ -29,14 +29,14 @@ const Settings = () => {
     <>
       <ToastContainer />
       <div className="h-full p-4 pb-0">
-        <section className="pt-8 px-3">
+        <section className="pt-8 px-3 sm:px-6">
           <div className="flex justify-between">
             <h1 className="text-3xl font-medium tracking-tight">Settings</h1>
           </div>
         </section>
 
-        <section className="mt-6 px-3">
-          <div className="border rounded-3xl shadow p-4 mb-6">
+        <section className="mt-6 px-3 sm:px-6">
+          <div className="border rounded-3xl shadow p-4 mb-6 lg:max-w-3xl ">
             <h2 className="text-xl font-medium mb-4">Update Password</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
               <div>
@@ -69,7 +69,7 @@ const Settings = () => {
                   {...register("confirm_new_password", { required: true })}
                 />
               </div>
-              <Button type="submit" className="w-fit bg-purple-500">
+              <Button type="submit" className="w-full sm:w-auto bg-purple-500">
                 Update Password
               </Button>
               {message && <p className="text-green-500">{message}</p>}
